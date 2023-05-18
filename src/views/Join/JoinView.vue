@@ -27,14 +27,14 @@
             <div class="join-wrap">
                 <label class="label-nickname">nickname : </label>
                 <input class="input-nickname" type="text" name="nickname" width="50" v-model="nickname" />
-                <span class="btn-duplicatedNicknameCheck-wrapper">
+                <!-- <span class="btn-duplicatedNicknameCheck-wrapper">
                     <b-button class="btn-duplicatedNicknameCheck" variant="btn btn-danger"
                         v-on:click="duplicatedNicknameCheck(nickname)">Check Nickname
                     </b-button>
-                </span>
+                </span> -->
             </div>
 
-            <div class="join-nickname-dupl">
+            <!-- <div class="join-nickname-dupl">
                 <div v-if="duplicatedNickname"></div>
                 <div v-if="duplicatedNickname == '1'">
                     <p style="color: green">올바른 아이디입니다.</p>
@@ -42,7 +42,7 @@
                 <div v-if="duplicatedNickname == '-1'">
                     <p style="color: red"></p>
                 </div>
-            </div>
+            </div> -->
 
             <div class="join-wrap">
                 <label class="label-password">password : </label>
@@ -136,8 +136,7 @@ export default {
                 .post(`/join`, data)
                 .then(({ data }) => {
                     console.log(data); // 1: 성공시
-                    this.message = data.message;
-                    if (this.message === 1 && this.idCondition == "1") {
+                    if (data != null) {
                         alert("회원가입이 완료되었습니다.");
                         this.$router.push(`/`);
                     } else {
@@ -221,6 +220,7 @@ export default {
         },
 
         duplicatedIdCheck(str) {
+            console.log(str);
             // id 중복체크
             http.get(`/check/${str}`)
                 .then(({ data }) => {
@@ -242,23 +242,25 @@ export default {
                     alert("아이디를 입력해주세요.")
                 });
         },
-        duplicatedNicknameCheck(str) {
-            // 닉네임 중복체크
-            http.get(`/check/${str}`)
-                .then(({ data }) => {
-                    if (str == data.nickname) {
-                        this.duplicatedNickname = '-1';
-                        alert("중복된 닉네임 입니다.");
-                    }
-                    else {
-                        this.duplicatedNickname = '1';
-                        alert("사용할 수 있는 닉네임입니다.");
-                    }
-                }).catch(function (error) {
-                    console.log(error);
-                    alert("닉네임을 입력해주세요."); // 임시
-                });
-        },
+        // duplicatedNicknameCheck(str) {
+        //     console.log(this.memberId);
+        //     // 닉네임 중복체크
+        //     http.get(`/check/${this.memberId}`)
+        //         .then(({ data }) => {
+        //             console.log(data.nickname, str);
+        //             if (str == data.nickname) {
+        //                 this.duplicatedNickname = '-1';
+        //                 alert("중복된 닉네임 입니다.");
+        //             }
+        //             else {
+        //                 this.duplicatedNickname = '1';
+        //                 alert("사용할 수 있는 닉네임입니다.");
+        //             }
+        //         }).catch(function (error) {
+        //             console.log(error);
+        //             alert("닉네임을 입력해주세요."); // 임시
+        //         });
+        // },
 
     },
     computed: {
