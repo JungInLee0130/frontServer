@@ -13,7 +13,7 @@
           v-for="(review, i) in reviews"
           :key="i"
         >
-          <router-link :to="`/review/myplan/${review.review_id}`" class="chef-member">
+          <router-link :to="`/review/detail/${review.review_id}`" class="chef-member">
             <div class="member-img">
               <img :src="getImageSource(i)" class="img-fluid" alt="" />
               <div class="social">
