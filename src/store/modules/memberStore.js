@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
 import router from "@/router";
-import { login, findById, tokenRegeneration, logout } from "@/api/member";
+import { login, findById, tokenRegeneration, logout, getMemberRole } from "@/api/memberlib/member.js";
 
 const memberStore={
     namespaced:true,
@@ -34,20 +34,22 @@ const memberStore={
         }
     },
     actions:{
-        async userConfirm({commit}, user){
+        async userConfirm({commit}, member){
             await login(
-                user,
+                member,
                 ({data}) => {
                     if (data.message === "success"){
+                        console.log("success");   
                         let accessToken = data["access-token"];
                         let refreshToken = data["refresh-token"];
-                        // console.log("login success token created!!!! >> ", accessToken, refreshToken);
+                        console.log("login success token created!!!! >> ", accessToken, refreshToken);
                         // action -> commit -> mutation -> state
                         commit("SET_IS_LOGIN", true);
                         commit("SET_IS_LOGIN_ERROR", false);
                         commit("SET_IS_VALID_TOKEN", true);
                         sessionStorage.setItem("access-token", accessToken);
                         sessionStorage.setItem("refresh-token", refreshToken);
+
                     } else{
                         commit("SET_IS_LOGIN", false);
                         commit("SET_IS_LOGIN_ERROR", true);
@@ -65,12 +67,18 @@ const memberStore={
             let decodeToken = jwtDecode(token);
             console.log("getUserInfo 디코드토큰:", decodeToken);
             await findById(
-                decodeToken.userid,
+                decodeToken.memberId,
                 ({data}) => {
-                    // 성공하면
+                    // 성공하면 : 반환은 dto
                     if (data.message === "success"){
                         commit("SET_USER_INFO", data.userInfo);
-                        console.log("getUserInfo data: ", data);
+                        console.log("getUserInfo data: ", data.userInfo);
+                        //console.log(decodeToken.memberId);
+                        // memberRole = 'A' -> fetchData(admin)
+                        // memberRole = 'U' -> fetchData(user)
+                        // this.$EventBus.$on('role', (param)=>{
+                        //     this.fetchData(`user`);
+                        // })
                     } else{
                         console.log("유저 정보 없음!!!!");
                     }
@@ -101,7 +109,7 @@ const memberStore={
                         console.log("갱신 실패");
                         // 다시 로그인 전 DB에 저장된 refreshtoken 제거
                         await logout(
-                            state.userInfo.userid,
+                            state.userInfo.memberId,
                             ({data}) =>{
                                 if (data.message === "success"){
                                     console.log("리프레시 토큰 제거 성공");
@@ -124,19 +132,24 @@ const memberStore={
                 }
             );
         },
-        async userLogout({commit}, userid){
+        async userLogout({commit}, memberId){
             await logout(
-                userid,
+                memberId,
                 ({data}) => {
-                    if (data.message === "success"){
-                        commit("SET_IS_LOGIN", false);
-                        commit("SET_USER_INFO", null);
-                        commit("SET_IS_VALID_TOKEN", false);
-                    } else{
+                        if (data.message === "success"){
+                            commit("SET_IS_LOGIN", false);
+                            commit("SET_USER_INFO", null);
+                            commit("SET_IS_VALID_TOKEN", false);
+                        } else {
+                            console.log("유저 정보 없음!!!!");
+                        }
+                    },
+                    (error) => {
                         console.log(error);
                     }
-                }
             );
         },
     },
 };
+
+export default memberStore;

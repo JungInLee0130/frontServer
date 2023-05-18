@@ -74,6 +74,9 @@ export default {
       this.role = 'User';
       this.role = 'Admin';
       this.role = 'none';
+    },
+    fetchRole(){
+      this.$EventBus.$emit('role');
     }
   }
 };

@@ -9,13 +9,15 @@
                 <div class="input_wrap">
                     <div class="input_item">
                         <label for="id" class="icon_id">UserId</label>
-                        <input type="text" class="input_item_memberId" id="memberId" v-model="memberId"
-                            placeholder="UserId" />
+                        <input type="text" class="input_item_memberId" id="memberId" v-model="member.memberId"
+                            placeholder="UserId"
+                            @keyup.enter="confirm" />
                     </div>
                     <div class="input_item">
                         <label for="password" class="icon_password">Password</label>
-                        <input type="password" class="input_item_password" id="password" v-model="password"
-                            placeholder="Password" />
+                        <input type="password" class="input_item_password" id="password" v-model="member.password"
+                            placeholder="Password"
+                            @keyup.enter="confirm" />
                     </div>
                 </div>
                 <div class="check_wrap">
@@ -25,7 +27,7 @@
                     </span>
                 </div>
                 <div class="text-center">
-                    <button class="btn-login" @click.self.prevent="login()">Log In</button>
+                    <button class="btn-login" @click="confirm">Log In</button>
                 </div>
                 <div class="text-center">
                     <button class="btn-join-login" v-on:click="join()">Sign Up</button>
@@ -38,21 +40,20 @@
 </template>
 
 <script>
-//import http from '@/api/http.js'
+import http from '@/api/http';
 import {mapState, mapActions} from "vuex";
 
 const memberStore = "memberStore";
 
 export default {
     name: "LoginView",
-
-    components: {
-
-    },
     data() {
         return {
-            memberId: '',
-            password: '',
+            // isLoginError: false,
+            member:{
+                memberId: null,
+                password: null,
+            }
         }
     },
     computed:{
@@ -61,55 +62,17 @@ export default {
     methods: {
         ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
         async confirm(){
-            await this.userConfirm(this.user);
+            console.log(this.member.memberId, this.member.password);
+            await this.userConfirm(this.member);
+            
             let token = sessionStorage.getItem("access-token");
-            // console.log ("token : " + token);
+            console.log ("token : " + token);
             if (this.isLogin){
                 await this.getUserInfo(token);
                 this.$router.push({name: "home"});
             }
         },
-        login() {
-
-            // let data = {
-            //     memberId: this.memberId,
-            //     password: this.password
-            // }
-
-            // http.post("/login", data)
-            //     .then(({ data }) => {
-            //         console.log({ data });
-            //         this.member = data;
-            //         if (data == "") { // 정보가 없거나 비밀번호 틀림
-            //             alert("회원가입 또는 로그인 정보를 다시 확인해주세요.")
-            //         }
-            //         else { // 정상
-            //             this.$router.push(`/`);
-            //             alert("환영합니다.");
-            //         }
-            //     }).catch(function (error) {
-            //         console.log(error);
-            //     });
-
-            //console.log(this.memberId,this.password);
-            // let root = "http://localhost:3000"
-
-            // axios.post(root + "/login", data)
-            //     .then(({ data }) => {
-            //         console.log({ data });
-            //         this.member = data;
-            //         if (data == "") { // 정보가 없거나 비밀번호 틀림
-            //             alert("회원가입 또는 로그인 정보를 다시 확인해주세요.")
-            //         }
-            //         else { // 정상
-            //             this.$router.push(`/`);
-            //             alert("환영합니다.");
-            //         }
-            //     })
-            //     .catch(function (error) {
-            //         console.log(error);
-            //     });
-        },
+        
         join() {
             this.$router.push(`/join`);
         },
