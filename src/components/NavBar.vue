@@ -59,12 +59,19 @@
 </template>
 
 <script>
+import EventBus from "@/store/eventBus";
 export default {
   name: "NavBar",
   data() {
     return {
       role: "none",
     }
+  },
+  created(){
+    EventBus.$on('fetchRole', (response)=>{
+        
+        console.log("수신");
+    })
   },
   methods: {
     logout() {
@@ -76,7 +83,8 @@ export default {
       this.role = 'none';
     },
     fetchRole(){
-      this.$EventBus.$emit('role');
+      console.log("송신");
+      EventBus.$emit('fetchRole', this.role);
     }
   }
 };

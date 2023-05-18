@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import http from '@/api/http';
+import EventBus from "@/store/eventBus";
 import {mapState, mapActions} from "vuex";
 
 const memberStore = "memberStore";
@@ -56,6 +56,8 @@ export default {
             }
         }
     },
+    // 여기서 송신인듯
+    
     computed:{
         ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
     },
@@ -75,6 +77,13 @@ export default {
         
         join() {
             this.$router.push(`/join`);
+        },
+
+        fetchRole(role){
+            console.log("송신");
+            console.log(role);
+            if (this.member.memberId)
+            EventBus.$emit('fetchRole', );
         },
     },
 }
