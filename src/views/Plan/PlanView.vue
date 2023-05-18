@@ -238,7 +238,7 @@ export default {
         list: arr2,
       };
 
-      http.post("/plan", finalJSON).then((res) => console.log(res));
+      http.post("/plan", finalJSON).then((res) => this.$router.push("/review"));
     },
     initMap() {
       const container = document.getElementById("map");

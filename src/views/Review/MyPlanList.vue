@@ -52,7 +52,7 @@ export default {
   methods: {
     getList() {
       http.get("/review/xx").then(({ data }) => {
-        this.plans = data;
+        this.plans = data.response;
       });
     },
     getImageSource(index) {
