@@ -2,8 +2,7 @@
   <section id="chefs" class="chefs section-bg">
     <div class="container" data-aos="fade-up">
       <div class="section-header">
-        <h2>Chefs</h2>
-        <p>Our <span>Proffesional</span> Chefs</p>
+        <p>Fancy <span> Trip</span> Review</p>
       </div>
 
       <div class="row gy-4">
@@ -11,10 +10,12 @@
           class="col-lg-4 col-md-6 d-flex align-items-stretch"
           data-aos="fade-up"
           data-aos-delay="100"
+          v-for="(review, i) in reviews"
+          :key="i"
         >
-          <div class="chef-member">
+          <router-link :to="`/review/detail/${review.review_id}`" class="chef-member">
             <div class="member-img">
-              <img src="@/assets/img/chefs/chefs-1.jpg" class="img-fluid" alt="" />
+              <img :src="getImageSource(i)" class="img-fluid" alt="" />
               <div class="social">
                 <a href=""><i class="bi bi-twitter"></i></a>
                 <a href=""><i class="bi bi-facebook"></i></a>
@@ -23,74 +24,17 @@
               </div>
             </div>
             <div class="member-info">
-              <h4>Walter White</h4>
-              <span>Master Chef</span>
-              <p>
-                Velit aut quia fugit et et. Dolorum ea voluptate vel tempore tenetur ipsa quae aut.
-                Ipsum exercitationem iure minima enim corporis et voluptate.
-              </p>
+              <h4>{{ review.title }}</h4>
+              <span></span>
+              <p>{{ review.start_date }} - {{ review.end_date }}</p>
             </div>
-          </div>
-        </div>
-        <!-- End Chefs Member -->
-
-        <div
-          class="col-lg-4 col-md-6 d-flex align-items-stretch"
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
-          <div class="chef-member">
-            <div class="member-img">
-              <img src="@/assets/img/chefs/chefs-2.jpg" class="img-fluid" alt="" />
-              <div class="social">
-                <a href=""><i class="bi bi-twitter"></i></a>
-                <a href=""><i class="bi bi-facebook"></i></a>
-                <a href=""><i class="bi bi-instagram"></i></a>
-                <a href=""><i class="bi bi-linkedin"></i></a>
-              </div>
-            </div>
-            <div class="member-info">
-              <h4>Sarah Jhonson</h4>
-              <span>Patissier</span>
-              <p>
-                Quo esse repellendus quia id. Est eum et accusantium pariatur fugit nihil minima
-                suscipit corporis. Voluptate sed quas reiciendis animi neque sapiente.
-              </p>
-            </div>
-          </div>
-        </div>
-        <!-- End Chefs Member -->
-
-        <div
-          class="col-lg-4 col-md-6 d-flex align-items-stretch"
-          data-aos="fade-up"
-          data-aos-delay="300"
-        >
-          <div class="chef-member">
-            <div class="member-img">
-              <img src="@/assets/img/chefs/chefs-3.jpg" class="img-fluid" alt="" />
-              <div class="social">
-                <a href=""><i class="bi bi-twitter"></i></a>
-                <a href=""><i class="bi bi-facebook"></i></a>
-                <a href=""><i class="bi bi-instagram"></i></a>
-                <a href=""><i class="bi bi-linkedin"></i></a>
-              </div>
-            </div>
-            <div class="member-info">
-              <h4>William Anderson</h4>
-              <span>Cook</span>
-              <p>
-                Vero omnis enim consequatur. Voluptas consectetur unde qui molestiae deserunt.
-                Voluptates enim aut architecto porro aspernatur molestiae modi.
-              </p>
-            </div>
-          </div>
+          </router-link>
         </div>
         <!-- End Chefs Member -->
       </div>
       <div class="php-email-form p-3 p-md-4">
         <div class="text-center">
-          <router-link to="/review/plans">Regist</router-link>
+          <button class="buttonCustom" @click="movePage">Regist</button>
         </div>
       </div>
     </div>
@@ -99,7 +43,31 @@
 </template>
 
 <script>
-export default {};
+import http from "@/api/http.js";
+export default {
+  data() {
+    return {
+      reviews: [],
+    };
+  },
+  methods: {
+    movePage() {
+      this.$router.push("/review/plans");
+    },
+    getReview() {
+      http.get("/review").then(({ data }) => {
+        this.reviews = data.response;
+      });
+    },
+    getImageSource(index) {
+      let nI = (index % 19) + 1;
+      return require(`@/assets/img/tripReview/trip_${nI}.png`);
+    },
+  },
+  created() {
+    this.getReview();
+  },
+};
 </script>
 
 <style></style>

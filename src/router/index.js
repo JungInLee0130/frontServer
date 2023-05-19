@@ -2,10 +2,12 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import PlanView from "../views/Plan/PlanView.vue";
+// 리뷰
 import PlanReview from "../views/Review/PlanReview.vue";
 import MyPlanList from "../views/Review/MyPlanList.vue";
 import ReviewParent from "../views/Review/ReviewParent.vue";
 import WriteReview from "../views/Review/WriteReview.vue";
+import ReviewDetail from "../views/Review/ReviewDetail.vue";
 // 로그인
 import LoginView from "../views/Login/LoginView.vue";
 // 회원가입
@@ -78,6 +80,11 @@ const routes = [
         name: "writereview",
         component: WriteReview,
       },
+      {
+        path: "detail/:rid",
+        name: "reviewdetail",
+        component: ReviewDetail,
+      },
     ],
   },
 
@@ -116,17 +123,17 @@ const routes = [
     ],
   },
   {
-    path: '/user',
-    name: 'User',
+    path: "/user",
+    name: "User",
     component: UserView,
-    children:[  
+    children: [
       {
         path: 'mypage',
         name: 'mypage',
         beforeEnter: onlyAuthUser,
         component: () => import("@/components/User/MyPage"),
       },
-    ]
+    ],
   },
 ];
 

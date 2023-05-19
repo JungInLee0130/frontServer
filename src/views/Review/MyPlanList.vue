@@ -21,11 +21,16 @@
             <h3>My Plans</h3>
           </div>
 
-          <div class="row gy-5">
+          <div class="row">
             <div class="col-lg-4 menu-item" v-for="(plan, i) in plans" :key="i">
-              <router-link :to="`/review/myplan/${plan.plan_id}`" class="glightbox"
-                ><img :src="getImageSource(i)" class="menu-img img-fluid" alt=""
-              /></router-link>
+              <template v-if="plan.isReviewExist === 0">
+                <router-link :to="`/review/myplan/${plan.plan_id}`" class="glightbox">
+                  <img :src="getImageSource(i)" class="menu-img img-fluid" alt="" />
+                </router-link>
+              </template>
+              <template v-else>
+                <img :src="getImageSource(i)" class="menu-img img-fluid grayed-out" alt="" />
+              </template>
               <p class="ingredients">
                 {{ formatDate(plan.start_date) }} - {{ formatDate(plan.end_date) }}
               </p>
@@ -52,7 +57,7 @@ export default {
   methods: {
     getList() {
       http.get("/review/xx").then(({ data }) => {
-        this.plans = data;
+        this.plans = data.response;
       });
     },
     getImageSource(index) {
@@ -70,4 +75,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.grayed-out {
+  filter: grayscale(100%);
+}
+</style>
