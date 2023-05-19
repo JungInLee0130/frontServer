@@ -1,13 +1,13 @@
 import jwtDecode from "jwt-decode";
 import router from "@/router";
-import { login, findById, tokenRegeneration, logout, getMemberRole } from "@/api/memberlib/member.js";
+import { login, findById, tokenRegeneration, logout} from "@/api/memberlib/member.js";
 
 const memberStore={
     namespaced:true,
     state:{
         isLogin: false,
         isLoginError: false,
-        userInfo: null,
+        userInfo: {},
         isValidToken: false,
     },
     getters:{
@@ -34,7 +34,7 @@ const memberStore={
         }
     },
     actions:{
-        async userConfirm({commit}, member){
+        async userConfirm({commit}, member){ // 로그인 할때 씀
             await login(
                 member,
                 ({data}) => {
@@ -62,23 +62,20 @@ const memberStore={
             )
         },
         // dispatch -> action
+        // 유저정보 얻어옴
         async getUserInfo({commit, dispatch}, token){
             // 토큰 디코딩
             let decodeToken = jwtDecode(token);
             console.log("getUserInfo 디코드토큰:", decodeToken);
+            // 토큰 형식 : memberId만 담고있음
             await findById(
                 decodeToken.memberId,
                 ({data}) => {
-                    // 성공하면 : 반환은 dto
+                    // 성공하면 : 반환은 dto, success, userinfo
+                    console.log(data);
                     if (data.message === "success"){
                         commit("SET_USER_INFO", data.userInfo);
                         console.log("getUserInfo data: ", data.userInfo);
-                        //console.log(decodeToken.memberId);
-                        // memberRole = 'A' -> fetchData(admin)
-                        // memberRole = 'U' -> fetchData(user)
-                        // this.$EventBus.$on('role', (param)=>{
-                        //     this.fetchData(`user`);
-                        // })
                     } else{
                         console.log("유저 정보 없음!!!!");
                     }
@@ -117,6 +114,7 @@ const memberStore={
                                     console.log("리프레시 토큰 제거 실패");
                                 }
                                 alert("refreshtoken 기간 만료!!! 다시 로그인 해주세요.");
+                                state.memberStore.isLogin = false;
                                 commit("SET_IS_LOGIN", false);
                                 commit("SET_USER_INFO", null);
                                 commit("SET_IS_VALID_TOKEN", false);

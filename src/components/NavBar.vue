@@ -37,17 +37,19 @@
       </nav>
       <!-- .navbar -->
       <div>
-        <div v-if="role == 'none'">
-          <router-link to="/login" class="btn-book-a-table">Sign In</router-link>
-          <!-- <router-link to="/join" class="btn-book-a-table">Sign up</router-link> -->
+        <div v-if="this.isLogin">
+          <div v-if="this.userInfo.memberRole == 'U'">
+            <router-link to="/user/mypage" class="btn-book-a-table">My Page</router-link>
+            <button id="btn-logout" class="btn-book-a-table" v-on:click="signOut()">Log Out</button>
+          </div>
+          <div v-if="this.userInfo.memberRole == 'A'">
+            <router-link to="/admin/memberlist" class="btn-book-a-table">Admin</router-link>
+            <button id="btn-logout" class="btn-book-a-table" v-on:click="signOut()">Log Out</button>
+          </div>
         </div>
-        <div v-if="role == 'user'">
-          <router-link to="/user/mypage" class="btn-book-a-table">My Page</router-link>
-          <router-link to="/logout" class="btn-book-a-table">Log Out</router-link>
-        </div>
-        <div v-if="role == 'admin'">
-          <router-link to="/admin/memberlist" class="btn-book-a-table">Admin</router-link>
-          <router-link to="/logout" class="btn-book-a-table">Log Out</router-link>
+        <div v-else>
+          <router-link to="/login" class="btn-book-a-table">Sign In</router-link>   
+            <!-- <router-link to="/join" class="btn-book-a-table">Sign up</router-link> -->
         </div>
       </div>
 
@@ -59,35 +61,37 @@
 </template>
 
 <script>
-import EventBus from "@/store/eventBus";
+import {mapState, mapActions} from "vuex";
+const memberStore = "memberStore";
 export default {
   name: "NavBar",
   data() {
     return {
-      role: "none",
+      loginState: false,
+      member: {},
     }
   },
   created(){
-    EventBus.$on('fetchRole', (response)=>{
-        
-        console.log("수신");
-    })
+      this.role = this.$store.state.memberStore.userInfo.memberRole;
+  },
+  computed:{
+    ...mapState(memberStore, ["isLogin", "userInfo"]),
   },
   methods: {
-    logout() {
-
-    },
-    chooseRole() {
-      this.role = 'User';
-      this.role = 'Admin';
-      this.role = 'none';
-    },
-    fetchRole(){
-      console.log("송신");
-      EventBus.$emit('fetchRole', this.role);
+    ...mapActions(memberStore,["userLogout"]),
+    signOut(){
+      this.$store.state.memberStore.isLogin = false;
+      sessionStorage.removeItem("vuex");
+      sessionStorage.removeItem("access-token");
+      sessionStorage.removeItem("refresh-token");
+      if (this.$route.path != "/") this.$router.push({ name: "home" });
     }
-  }
+  },
 };
 </script>
 
-<style></style>
+<style>
+#btn-logout{
+  border: 0;
+}
+</style>

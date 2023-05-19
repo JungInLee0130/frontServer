@@ -32,57 +32,23 @@
                         <input class="input-phoneNumber" type="text" name="phoneNumber" readonly="readonly" width="50"
                                 v-model="member.phoneNumber" />
                     </div>
-
-                    <div class = "detail-wrap">
-                        <label class="label-createdAt">createdAt : </label>
-                        <input class="input-createdAt" type="text" name="createdAt" readonly="readonly" width="50"
-                                v-model="member.createdAt" />
-                        
-                    </div>
-                    <div class = "detail-wrap">
-                        <label class="label-modifiedAt">modifiedAt : </label>
-                        <input class="input-modifiedAt" type="text" name="modifiedAt" readonly="readonly" width="50"
-                                v-model="member.modifiedAt" />
-                        
-                    </div>
-
-                    <div class = "detail-wrap">
-                        <label class="label-memberRole">memberRole : </label>
-                        <input class="input-memberRole" type="text" name="memberRole" readonly="readonly" width="50"
-                                v-model="member.memberRole" />
-                        
-                    </div> 
                 </div>
         </section>
     </body>
 </template>
 
 <script>
-import http from '@/api/http.js';
 export default {
     name: 'MyPage',
     data() {
         return {
-            member: [],
+            member: {},
+            tokenState: false,
         };
     },
+
     created() {
-        let memberId = this.$route.params.memberId;
-        console.log(memberId);
-        this.memberDetail(memberId);
-    },
-    methods: {
-        memberDetail(id) {
-            http
-                .get(`/memberdetail/${id}`)
-                .then(({ data }) => {
-                    console.log(data);
-                    this.member = data;
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
-        },
+        this.member = this.$store.state.memberStore.userInfo;
     },
 };
 </script>

@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import EventBus from "@/store/eventBus";
 import {mapState, mapActions} from "vuex";
 
 const memberStore = "memberStore";
@@ -73,17 +72,13 @@ export default {
                 await this.getUserInfo(token);
                 this.$router.push({name: "home"});
             }
+            else{
+                alert("등록되지 않은 사용자입니다. 회원가입을 해주세요.")
+            }
         },
         
         join() {
             this.$router.push(`/join`);
-        },
-
-        fetchRole(role){
-            console.log("송신");
-            console.log(role);
-            if (this.member.memberId)
-            EventBus.$emit('fetchRole', );
         },
     },
 }
