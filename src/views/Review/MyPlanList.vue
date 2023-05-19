@@ -21,7 +21,7 @@
             <h3>My Plans</h3>
           </div>
 
-          <div class="row gy-5">
+          <div class="row">
             <div class="col-lg-4 menu-item" v-for="(plan, i) in plans" :key="i">
               <template v-if="plan.isReviewExist === 0">
                 <router-link :to="`/review/myplan/${plan.plan_id}`" class="glightbox">

@@ -60,7 +60,7 @@ export default {
       });
     },
     getImageSource(index) {
-      let nI = (index % 16) + 1;
+      let nI = (index % 19) + 1;
       return require(`@/assets/img/tripReview/trip_${nI}.png`);
     },
   },
