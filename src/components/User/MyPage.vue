@@ -32,34 +32,12 @@
                         <input class="input-phoneNumber" type="text" name="phoneNumber" readonly="readonly" width="50"
                                 v-model="member.phoneNumber" />
                     </div>
-
-                    <div class = "detail-wrap">
-                        <label class="label-createdAt">createdAt : </label>
-                        <input class="input-createdAt" type="text" name="createdAt" readonly="readonly" width="50"
-                                v-model="member.createdAt" />
-                        
-                    </div>
-                    <div class = "detail-wrap">
-                        <label class="label-modifiedAt">modifiedAt : </label>
-                        <input class="input-modifiedAt" type="text" name="modifiedAt" readonly="readonly" width="50"
-                                v-model="member.modifiedAt" />
-                        
-                    </div>
-
-                    <div class = "detail-wrap">
-                        <label class="label-memberRole">memberRole : </label>
-                        <input class="input-memberRole" type="text" name="memberRole" readonly="readonly" width="50"
-                                v-model="member.memberRole" />
-                        
-                    </div> 
                 </div>
         </section>
     </body>
 </template>
 
 <script>
-import {mapActions} from "vuex";
-const memberStore = "memberStore";
 export default {
     name: 'MyPage',
     data() {
@@ -71,20 +49,6 @@ export default {
 
     created() {
         this.member = this.$store.state.memberStore.userInfo;
-        let curTokenState = this.$store.state.memberStore.isValidToken;
-        this.tokenState = curTokenState;
-        console.log(this.member, this.tokenState);
-        if (!curTokenState){
-            this.refreschCurToken();
-        }
-    },
-
-    methods: { 
-        ...mapActions(memberStore, ["tokenRegeneration"]),
-        async refreschCurToken(){
-            console.log(this.tokenState);
-            await this.tokenRegeneration();
-        }
     },
 };
 </script>

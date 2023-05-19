@@ -114,6 +114,7 @@ const memberStore={
                                     console.log("리프레시 토큰 제거 실패");
                                 }
                                 alert("refreshtoken 기간 만료!!! 다시 로그인 해주세요.");
+                                state.memberStore.isLogin = false;
                                 commit("SET_IS_LOGIN", false);
                                 commit("SET_USER_INFO", null);
                                 commit("SET_IS_VALID_TOKEN", false);

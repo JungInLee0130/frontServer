@@ -38,6 +38,7 @@ const onlyAuthUser = async (to, from, next) =>{
   }
   if (!checkToken || checkUserInfo === null){
     alert("로그인이 필요한 페이지입니다.");
+    store.state.memberStore.isLogin = false;
     router.push({name: "login"});
   } else{
     console.log("로그인 완료.");
@@ -85,10 +86,6 @@ const routes = [
     name: "login",
     component: LoginView,
   },
-  // {
-  //   path: "/logout",
-  //   component: HomeView,
-  // },
   {
     path: "/join",
     name: "join",
@@ -97,6 +94,7 @@ const routes = [
   {
     path: "/admin",
     name: "Admin",
+    beforeEnter: onlyAuthUser,
     component: AdminView,
     redirect: "/admin/memberlist",
     children: [

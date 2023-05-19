@@ -58,14 +58,14 @@ export default {
         adminDelete(id) { // 버튼 클릭시 삭제
             http.delete(`/memberDelete/${id}`).then(({ data }) => {
                 console.log(data.message);
-                this.message = data.message;
-                if (this.message === 1) {
-                    // this.$router.push(`/admin/memberlist`)
-                    alert("성공적으로 삭제했습니다.")
-                }
-                else {
-                    alert("삭제에 실패했습니다.")
-                }
+                alert("성공적으로 삭제했습니다.");
+                // if (this.message === 1) {
+                //     // this.$router.push(`/admin/memberlist`)
+                    
+                // }
+                // else {
+                //     alert("삭제에 실패했습니다.");
+                // }
                 this.$emit('dm');
             })
         },

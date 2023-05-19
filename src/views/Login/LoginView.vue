@@ -72,6 +72,9 @@ export default {
                 await this.getUserInfo(token);
                 this.$router.push({name: "home"});
             }
+            else{
+                alert("등록되지 않은 사용자입니다. 회원가입을 해주세요.")
+            }
         },
         
         join() {
