@@ -58,20 +58,33 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+const memberStore = "memberStore";
 export default {
     name: 'MyPage',
     data() {
         return {
             member: {},
+            tokenState: false,
         };
     },
 
     created() {
         this.member = this.$store.state.memberStore.userInfo;
-        console.log(this.member);
+        let curTokenState = this.$store.state.memberStore.isValidToken;
+        this.tokenState = curTokenState;
+        console.log(this.member, this.tokenState);
+        if (!curTokenState){
+            this.refreschCurToken();
+        }
     },
 
     methods: { 
+        ...mapActions(memberStore, ["tokenRegeneration"]),
+        async refreschCurToken(){
+            console.log(this.tokenState);
+            await this.tokenRegeneration();
+        }
     },
 };
 </script>

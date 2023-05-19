@@ -21,7 +21,29 @@ import MemberDetail from "../components/Member/MemberDetail";
 import AdminUpdate from "../components/Member/AdminUpdate";
 import MyPage from "../components/User/MyPage";
 
+// store
+import store from "@/store";
+
 Vue.use(VueRouter);
+
+const onlyAuthUser = async (to, from, next) =>{
+  const checkUserInfo = store.getters["memberStore/checkUserInfo"];
+  const checkToken = store.getters["memberStore/checkToken"];
+  let token = sessionStorage.getItem("access-token");
+  console.log("로그인 처리 전", checkUserInfo, token);
+
+  if (checkUserInfo != null && token){
+    console.log("토큰 유효성 체크");
+    await store.dispatch("memberStore/getUserInfo", token);
+  }
+  if (!checkToken || checkUserInfo === null){
+    alert("로그인이 필요한 페이지입니다.");
+    router.push({name: "login"});
+  } else{
+    console.log("로그인 완료.");
+    next();
+  }
+}
 
 const routes = [
   {
@@ -63,10 +85,10 @@ const routes = [
     name: "login",
     component: LoginView,
   },
-  {
-    path: "/logout:memberId",
-    component: NavBar,
-  },
+  // {
+  //   path: "/logout",
+  //   component: HomeView,
+  // },
   {
     path: "/join",
     name: "join",
@@ -103,7 +125,8 @@ const routes = [
       {
         path: 'mypage',
         name: 'mypage',
-        component: MyPage,
+        beforeEnter: onlyAuthUser,
+        component: () => import("@/components/User/MyPage"),
       },
     ]
   },
