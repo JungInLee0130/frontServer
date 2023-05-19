@@ -58,31 +58,20 @@
 </template>
 
 <script>
-import http from '@/api/http.js';
 export default {
     name: 'MyPage',
     data() {
         return {
-            member: [],
+            member: {},
         };
     },
+
     created() {
-        let memberId = this.$route.params.memberId;
-        console.log(memberId);
-        this.memberDetail(memberId);
+        this.member = this.$store.state.memberStore.userInfo;
+        console.log(this.member);
     },
-    methods: {
-        memberDetail(id) {
-            http
-                .get(`/memberdetail/${id}`)
-                .then(({ data }) => {
-                    console.log(data);
-                    this.member = data;
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
-        },
+
+    methods: { 
     },
 };
 </script>

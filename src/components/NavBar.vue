@@ -39,6 +39,8 @@
       <div>
         <div v-if="role == 'none'">
           <router-link to="/login" class="btn-book-a-table">Sign In</router-link>
+          <router-link to="/user/mypage" class="btn-book-a-table">My Page</router-link>
+          <router-link to="/logout" class="btn-book-a-table">Log Out</router-link>
           <!-- <router-link to="/join" class="btn-book-a-table">Sign up</router-link> -->
         </div>
         <div v-if="role == 'user'">

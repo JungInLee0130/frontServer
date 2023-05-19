@@ -6,7 +6,7 @@ async function login(member, success, fail) {
     await api.post(`/login`, JSON.stringify(member)).then(success).catch(fail);
   }
   
-async function findById(memberId, success, fail) {
+async function findById(memberId, success, fail) { // findbyid : 유저 dto 리턴
 api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
 await api.get(`/info/${memberId}`).then(success).catch(fail);
 }

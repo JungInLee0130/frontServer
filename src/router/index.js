@@ -101,7 +101,7 @@ const routes = [
     component: UserView,
     children:[  
       {
-        path: 'mypage/:memberId',
+        path: 'mypage',
         name: 'mypage',
         component: MyPage,
       },
