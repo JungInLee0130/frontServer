@@ -122,6 +122,7 @@ export default {
     },
     methods: {
         join() {
+            
             let data = {
                 memberId: this.memberId,
                 nickname: this.memberId,
@@ -219,7 +220,7 @@ export default {
             this.passwordIdentify = "1";
         },
 
-        duplicatedIdCheck(str) {
+        duplicatedIdCheck(str) { // 아이디 특수문자도 걸러냄
             console.log(str);
             // id 중복체크
             http.get(`/check/${str}`)
