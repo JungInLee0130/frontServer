@@ -50,8 +50,9 @@
     <div class="container">
       <div class="copyright">
         &copy; Copyright
-        <strong><span>Yong-Ho-Chon&nbsp;</span>
-          <span>Jung-In-Lee</span></strong><br> All Rights Reserved
+        <strong><span>Young-Ho-Jeon&nbsp;</span> <span>Jung-In-Lee</span></strong
+        ><br />
+        All Rights Reserved
       </div>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->

@@ -17,28 +17,15 @@
           <textarea
             class="plan-review-text"
             v-model="board[index]"
+            @input="updateBoard(index, $event.target.value)"
+            @click="updateBoard(index, $event.target.value)"
             placeholder="Write your review..."
           ></textarea>
         </div>
       </div>
-      <button class="buttonCustom" @click="sendPost">Submit</button>
-    </div>
-
-    <div>
-      <textarea
-        ref="contentArea"
-        v-model="content"
-        @mouseup="handleMouseUp"
-        placeholder="게시글 내용을 입력하세요"
-      ></textarea>
       <input type="file" @change="handleFileUpload" accept="image/*" />
-      <div
-        v-if="showImagePreview"
-        class="image-preview"
-        :style="{ top: previewTop + 'px', left: previewLeft + 'px' }"
-      >
-        <img :src="imagePreviewUrl" alt="이미지 미리보기" />
-      </div>
+      <button class="buttonCustom" @click="sendPost">Submit</button>
+      <button class="buttonCustom" @click="concatString">Test</button>
     </div>
   </section>
   <!-- End About Section -->
@@ -53,16 +40,33 @@ export default {
       travelPlans: [],
       board: [],
       rtitle: "",
+      focusedIndex: null, // 포커스된 요소의 인덱스
 
-      content: "",
       imageFile: null,
-      showImagePreview: false,
-      imagePreviewUrl: "",
-      previewTop: 0,
-      previewLeft: 0,
+      imgUrl: "",
     };
   },
   methods: {
+    concatString() {
+      if (this.focusedIndex !== null) {
+        const textarea = document.querySelectorAll(".plan-review-text")[this.focusedIndex];
+        const startPosition = textarea.selectionStart;
+        const endPosition = textarea.selectionEnd;
+        const currentValue = this.board[this.focusedIndex];
+        const newValue =
+          currentValue.substring(0, startPosition) +
+          this.imgUrl +
+          currentValue.substring(endPosition);
+        this.$set(this.board, this.focusedIndex, newValue);
+        textarea.selectionStart = startPosition + this.imgUrl.length; // 3은 "123"의 길이입니다.
+        textarea.selectionEnd = startPosition + this.imgUrl.length;
+        textarea.focus();
+      }
+    },
+    updateBoard(index, value) {
+      this.board[index] = value;
+      this.focusedIndex = index;
+    },
     sendPost() {
       const memberid = "admin";
       const planid = this.travelPlans.plan_id;
@@ -88,42 +92,28 @@ export default {
     },
     handleFileUpload(event) {
       this.imageFile = event.target.files[0];
-    },
-    handleMouseUp(event) {
-      if (this.imageFile) {
-        this.showImagePreview = true;
-        this.previewTop = event.clientY + window.scrollY;
-        this.previewLeft = event.clientX;
+      const formData = new FormData();
+      formData.append("image", this.imageFile);
 
-        const formData = new FormData();
-        formData.append("image", this.imageFile);
+      axios
+        .post("http://localhost:8080/uploadImage", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          this.imgUrl = `<img src="${response.data}" style="width: 600px; height:auto;" alt="image">`;
+          this.concatString();
 
-        axios
-          .post("http://localhost:8080/uploadImage", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((response) => {
-            // 이미지 업로드 성공 시 이미지 URL을 저장하고 게시글 내에 삽입
-            const imageUrl = response.data;
-            const contentArea = this.$refs.contentArea;
-            const cursorPosition = contentArea.selectionStart;
-
-            this.content =
-              this.content.slice(0, cursorPosition) +
-              `<img src="${imageUrl}" alt="이미지">` +
-              this.content.slice(cursorPosition);
-
-            // 이미지 파일과 관련된 데이터 초기화
-            this.imageFile = null;
-            this.showImagePreview = false;
-          })
-          .catch((error) => {
-            // 이미지 업로드 실패 시 수행할 작업
-            console.error(error);
-          });
-      }
+          // 이미지 파일과 관련된 데이터 초기화
+          this.imageFile = null;
+          this.imgUrl = null;
+        })
+        .catch((error) => {
+          // 이미지 업로드 실패 시 수행할 작업
+          console.error(error);
+        });
     },
   },
   created() {
