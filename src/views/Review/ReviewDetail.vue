@@ -5,7 +5,13 @@
       <div class="section-header">
         <p>{{ review.title }}</p>
       </div>
-      <div style="float: right">{{ review.hit }} hit</div>
+      <div style="float: right">
+        <div @click="toggleHeart">
+          <i :class="heartClass"></i>
+          <div>likes {{ review.likeCount }}</div>
+        </div>
+        <div>{{ review.hit }} hit</div>
+      </div>
 
       <div class="row gy-4">
         <div v-for="(reviewDay, i) in review.dailyList" :key="i">
@@ -20,10 +26,15 @@
             </div>
           </div>
           <div class="col-md-8">
-            <div v-html="renderContentsWithImage(reviewDay.contents)"></div>
+            <div style="width: 600px" v-html="renderContentsWithImage(reviewDay.contents)"></div>
           </div>
           <!-- End Info Item -->
         </div>
+      </div>
+
+      <div v-if="isOwner">
+        <button class="buttonCustom" @click="deleteReview">Delete</button>
+        <button class="buttonCustom" @click="modifyReview">Modify</button>
       </div>
     </div>
   </section>
@@ -37,15 +48,57 @@ export default {
     return {
       review: null,
       startDay: "",
+      isOwner: false,
+      isFilled: false,
     };
   },
   methods: {
+    toggleHeart() {
+      const reviewId = this.$route.params.rid;
+      const memberId = this.$store.state.memberStore.userInfo.memberId;
+      const likeJson = {
+        member_id: memberId,
+        review_id: reviewId,
+      };
+      if (this.isFilled) {
+        this.review.likeCount--;
+        this.isFilled = false;
+        http.put("/review/like", likeJson).then(() => {
+          console.log("del success");
+        });
+      } else {
+        this.review.likeCount++;
+        this.isFilled = true;
+        http.post("/review/like", likeJson).then(() => {
+          console.log("post success");
+        });
+      }
+    },
+    updateHit() {
+      const id = this.$route.params.rid;
+      http.get("/review/hit/" + id).then(() => {});
+    },
+    modifyReview() {
+      const id = this.$route.params.rid;
+      this.$router.push("/review/modify/" + id);
+    },
+    deleteReview() {
+      const id = this.$route.params.rid;
+      http.delete("/review/all/" + id).then(() => {
+        this.$router.push("/review");
+      });
+    },
     getDetail() {
       const id = this.$route.params.rid;
       http.get("/review/all/" + id).then(({ data }) => {
-        console.log(data.response);
         this.review = data.response;
         this.startDay = data.response.dailyList[0].reviewDate;
+        if (data.response.member_id === this.$store.state.memberStore.userInfo.memberId) {
+          this.isOwner = true;
+        }
+        if (this.review.isLikeExist === 1) {
+          this.isFilled = true;
+        }
       });
     },
 
@@ -53,8 +106,16 @@ export default {
       return contents;
     },
   },
+  computed: {
+    heartClass() {
+      return this.isFilled ? "bi-heart-fill" : "bi-heart";
+    },
+  },
   created() {
     this.getDetail();
+  },
+  mounted() {
+    this.updateHit();
   },
 };
 </script>
@@ -70,5 +131,11 @@ export default {
 .spanCustom {
   display: inline-block;
   margin-right: 5px; /* 아이콘과 문자열 간격을 조정하기 위한 스타일 */
+}
+.bi-heart-fill {
+  color: crimson;
+}
+.bi-heart {
+  color: crimson;
 }
 </style>

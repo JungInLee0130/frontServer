@@ -8,6 +8,7 @@ import MyPlanList from "../views/Review/MyPlanList.vue";
 import ReviewParent from "../views/Review/ReviewParent.vue";
 import WriteReview from "../views/Review/WriteReview.vue";
 import ReviewDetail from "../views/Review/ReviewDetail.vue";
+import ReviewModify from "../views/Review/ReviewModify.vue";
 // 로그인
 import LoginView from "../views/Login/LoginView.vue";
 // 회원가입
@@ -28,25 +29,25 @@ import store from "@/store";
 
 Vue.use(VueRouter);
 
-const onlyAuthUser = async (to, from, next) =>{
+const onlyAuthUser = async (to, from, next) => {
   const checkUserInfo = store.getters["memberStore/checkUserInfo"];
   const checkToken = store.getters["memberStore/checkToken"];
   let token = sessionStorage.getItem("access-token");
   console.log("로그인 처리 전", checkUserInfo, token);
 
-  if (checkUserInfo != null && token){
+  if (checkUserInfo != null && token) {
     console.log("토큰 유효성 체크");
     await store.dispatch("memberStore/getUserInfo", token);
   }
-  if (!checkToken || checkUserInfo === null){
+  if (!checkToken || checkUserInfo === null) {
     alert("로그인이 필요한 페이지입니다.");
     store.state.memberStore.isLogin = false;
-    router.push({name: "login"});
-  } else{
+    router.push({ name: "login" });
+  } else {
     console.log("로그인 완료.");
     next();
   }
-}
+};
 
 const routes = [
   {
@@ -84,6 +85,11 @@ const routes = [
         path: "detail/:rid",
         name: "reviewdetail",
         component: ReviewDetail,
+      },
+      {
+        path: "modify/:mid",
+        name: "reviewmodify",
+        component: ReviewModify,
       },
     ],
   },
@@ -128,8 +134,8 @@ const routes = [
     component: UserView,
     children: [
       {
-        path: 'mypage',
-        name: 'mypage',
+        path: "mypage",
+        name: "mypage",
         beforeEnter: onlyAuthUser,
         component: () => import("@/components/User/MyPage"),
       },

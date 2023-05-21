@@ -68,25 +68,30 @@ export default {
       this.focusedIndex = index;
     },
     sendPost() {
-      const memberid = this.$store.state.memberStore.userInfo.memberId;
-      const planid = this.travelPlans.plan_id;
       const title = this.rtitle;
-      const start_date = this.travelPlans.start_date;
-
+      const id = this.$route.params.mid;
       const sendJson = {
-        member_id: memberid,
-        plan_id: planid,
+        review_id: id,
         title: title,
-        start_date: start_date,
+        start_date: this.travelPlans.start_date,
         list: this.board,
       };
-      http.post("/review", sendJson).then(() => this.$router.push("/review"));
+      console.log(sendJson);
+      http.put("/review", sendJson).then(() => this.$router.push("/review/detail/" + id));
     },
     getList() {
-      const id = this.$route.params.id;
+      const id = this.$route.params.mid;
       http.get("/review/myplan/" + id).then(({ data }) => {
         this.travelPlans = data.response;
-        this.board = new Array(data.response.list.length);
+      });
+    },
+    getDetail() {
+      const id = this.$route.params.mid;
+      http.get("/review/all/" + id).then(({ data }) => {
+        this.rtitle = data.response.title;
+        for (let i = 0; i < data.response.dailyList.length; i++) {
+          this.board.push(data.response.dailyList[i].contents);
+        }
       });
     },
     handleFileUpload(event) {
@@ -117,6 +122,7 @@ export default {
   },
   created() {
     this.getList();
+    this.getDetail();
   },
 };
 </script>
