@@ -42,7 +42,10 @@
 </template>
 
 <script>
-import http from "@/api/http.js";
+import {mapActions} from "vuex";
+
+const reviewStore = "reviewStore";
+//import http from "@/api/http.js";
 export default {
   data() {
     return {
@@ -52,7 +55,9 @@ export default {
       isFilled: false,
     };
   },
+
   methods: {
+<<<<<<< HEAD
     toggleHeart() {
       const reviewId = this.$route.params.rid;
       const memberId = this.$store.state.memberStore.userInfo.memberId;
@@ -100,6 +105,22 @@ export default {
           this.isFilled = true;
         }
       });
+=======
+    ...mapActions(reviewStore, ["getReviewAll"]),
+    async getDetail() {
+      const id = this.$route.params.rid;
+
+      await this.getReviewAll(id);
+      // 기존
+      // http.get("/review/all/" + id).then(({ data }) => {
+      //   console.log(data.response);
+      //   this.review = data.response;
+      //   this.startDay = data.response.dailyList[0].reviewDate;
+      // });
+
+      // jwt 추가
+      
+>>>>>>> c18bacf0705da21cf351415c79f87dade46fb9d9
     },
 
     renderContentsWithImage(contents) {
