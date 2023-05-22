@@ -13,13 +13,17 @@
           <li><router-link to="/about">About</router-link></li>
           <li><router-link to="/plan">Plan</router-link></li>
           <li><router-link to="/review">Review</router-link></li>
-          <li><a href="#gallery">Gallery</a></li>
+          <li><router-link to="/error">Error</router-link></li>
           <li class="dropdown">
-            <a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <a href="#"
+              ><span>Drop Down</span> <i class="bi bi-chevron-down dropdown-indicator"></i
+            ></a>
             <ul>
               <li><a href="#">Drop Down 1</a></li>
               <li class="dropdown">
-                <a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                <a href="#"
+                  ><span>Deep Drop Down</span> <i class="bi bi-chevron-down dropdown-indicator"></i
+                ></a>
                 <ul>
                   <li><a href="#">Deep Drop Down 1</a></li>
                   <li><a href="#">Deep Drop Down 2</a></li>
@@ -48,8 +52,8 @@
           </div>
         </div>
         <div v-else>
-          <router-link to="/login" class="btn-book-a-table">Sign In</router-link>   
-            <!-- <router-link to="/join" class="btn-book-a-table">Sign up</router-link> -->
+          <router-link to="/login" class="btn-book-a-table">Sign In</router-link>
+          <!-- <router-link to="/join" class="btn-book-a-table">Sign up</router-link> -->
         </div>
       </div>
 
@@ -61,7 +65,7 @@
 </template>
 
 <script>
-import {mapState, mapActions} from "vuex";
+import { mapState, mapActions } from "vuex";
 const memberStore = "memberStore";
 export default {
   name: "NavBar",
@@ -69,29 +73,29 @@ export default {
     return {
       loginState: false,
       member: {},
-    }
+    };
   },
-  created(){
-      this.role = this.$store.state.memberStore.userInfo.memberRole;
+  created() {
+    this.role = this.$store.state.memberStore.userInfo.memberRole;
   },
-  computed:{
+  computed: {
     ...mapState(memberStore, ["isLogin", "userInfo"]),
   },
   methods: {
-    ...mapActions(memberStore,["userLogout"]),
-    signOut(){
+    ...mapActions(memberStore, ["userLogout"]),
+    signOut() {
       this.$store.state.memberStore.isLogin = false;
       sessionStorage.removeItem("vuex");
       sessionStorage.removeItem("access-token");
       sessionStorage.removeItem("refresh-token");
       if (this.$route.path != "/") this.$router.push({ name: "home" });
-    }
+    },
   },
 };
 </script>
 
 <style>
-#btn-logout{
+#btn-logout {
   border: 0;
 }
 </style>

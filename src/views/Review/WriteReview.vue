@@ -32,7 +32,8 @@
 </template>
 
 <script>
-import http from "@/api/http.js";
+import { apiInstance } from "@/api/lib/index.js";
+const http = apiInstance();
 import axios from "axios";
 export default {
   data() {
@@ -80,7 +81,12 @@ export default {
         start_date: start_date,
         list: this.board,
       };
-      http.post("/review", sendJson).then(() => this.$router.push("/review"));
+      http
+        .post("/review", sendJson)
+        .then(() => this.$router.push("/review"))
+        .catch(({ response }) => {
+          alert(response.data.error.message);
+        });
     },
     getList() {
       const id = this.$route.params.id;
@@ -109,9 +115,9 @@ export default {
           this.imageFile = null;
           this.imgUrl = null;
         })
-        .catch((error) => {
+        .catch(({ data }) => {
           // 이미지 업로드 실패 시 수행할 작업
-          console.error(error);
+          console.error(data);
         });
     },
   },

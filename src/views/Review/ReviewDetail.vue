@@ -3,14 +3,14 @@
     <div class="container" data-aos="fade-up">
       <div style="height: 120px"></div>
       <div class="section-header">
-        <p>{{ review.title }}</p>
+        <p>{{ myTitle }}</p>
       </div>
       <div style="float: right">
         <div @click="toggleHeart">
           <i :class="heartClass"></i>
-          <div>likes {{ review.likeCount }}</div>
+          <div>likes {{ myLikeCount }}</div>
         </div>
-        <div>{{ review.hit }} hit</div>
+        <div>{{ myHit }} hit</div>
       </div>
 
       <div class="row gy-4">
@@ -42,22 +42,22 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
-
-const reviewStore = "reviewStore";
-//import http from "@/api/http.js";
+import { apiInstance } from "@/api/lib/index.js";
+const http = apiInstance();
 export default {
   data() {
     return {
+      myTitle: "",
       review: null,
       startDay: "",
       isOwner: false,
       isFilled: false,
+      myLikeCount: null,
+      myHit: null,
     };
   },
 
   methods: {
-<<<<<<< HEAD
     toggleHeart() {
       const reviewId = this.$route.params.rid;
       const memberId = this.$store.state.memberStore.userInfo.memberId;
@@ -98,6 +98,9 @@ export default {
       http.get("/review/all/" + id).then(({ data }) => {
         this.review = data.response;
         this.startDay = data.response.dailyList[0].reviewDate;
+        this.myTitle = data.response.title;
+        this.myLikeCount = data.response.likeCount;
+        this.myHit = data.response.hit;
         if (data.response.member_id === this.$store.state.memberStore.userInfo.memberId) {
           this.isOwner = true;
         }
@@ -105,22 +108,6 @@ export default {
           this.isFilled = true;
         }
       });
-=======
-    ...mapActions(reviewStore, ["getReviewAll"]),
-    async getDetail() {
-      const id = this.$route.params.rid;
-
-      await this.getReviewAll(id);
-      // 기존
-      // http.get("/review/all/" + id).then(({ data }) => {
-      //   console.log(data.response);
-      //   this.review = data.response;
-      //   this.startDay = data.response.dailyList[0].reviewDate;
-      // });
-
-      // jwt 추가
-      
->>>>>>> c18bacf0705da21cf351415c79f87dade46fb9d9
     },
 
     renderContentsWithImage(contents) {

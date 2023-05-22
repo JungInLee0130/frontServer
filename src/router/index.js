@@ -17,6 +17,8 @@ import JoinView from "../views/Join/JoinView.vue";
 import AdminView from "../views/Admin/AdminView.vue";
 // 사용자
 import UserView from "../views/User/UserView.vue";
+//에러
+import ErrorView from "../views/Error/ErrorView.vue";
 // 멤버컴포넌트
 import NavBar from "../components/NavBar.vue";
 import MemberList from "../components/Member/MemberList";
@@ -59,6 +61,11 @@ const routes = [
     path: "/plan",
     name: "plan",
     component: PlanView,
+  },
+  {
+    path: "/error",
+    name: "error",
+    component: ErrorView,
   },
   {
     path: "/review",
