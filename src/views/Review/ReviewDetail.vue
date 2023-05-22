@@ -36,6 +36,31 @@
         <button class="buttonCustom" @click="deleteReview">Delete</button>
         <button class="buttonCustom" @click="modifyReview">Modify</button>
       </div>
+
+      <div style="height: 60px"></div>
+
+      <!-- 댓글 -->
+      <table class="table">
+        <tbody>
+          <tr v-for="(comment, j) in comments" :key="j">
+            <td style="width: 100px">{{ comment.member_id }}</td>
+            <td>
+              {{ comment.contents }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="form-group">
+        <textarea
+          class="form-control"
+          rows="5"
+          placeholder="Comments..."
+          v-model="commentsContents"
+        ></textarea>
+      </div>
+      <div style="height: 10px"></div>
+      <button class="buttonCustom" style="float: right" @click="postComments">Comment</button>
+      <!-- 댓글 끝-->
     </div>
   </section>
   <!-- End About Section -->
@@ -54,10 +79,25 @@ export default {
       isFilled: false,
       myLikeCount: null,
       myHit: null,
+      comments: null,
+      commentsContents: "",
     };
   },
 
   methods: {
+    postComments() {
+      const memberId = this.$store.state.memberStore.userInfo.memberId;
+      const reviewId = this.$route.params.rid;
+      const commentsJson = {
+        member_id: memberId,
+        review_id: reviewId,
+        contents: this.commentsContents,
+      };
+      http.post("/review/comments", commentsJson).then(() => {
+        this.getComments();
+        this.commentsContents = "";
+      });
+    },
     toggleHeart() {
       const reviewId = this.$route.params.rid;
       const memberId = this.$store.state.memberStore.userInfo.memberId;
@@ -66,17 +106,13 @@ export default {
         review_id: reviewId,
       };
       if (this.isFilled) {
-        this.review.likeCount--;
+        this.myLikeCount--;
         this.isFilled = false;
-        http.put("/review/like", likeJson).then(() => {
-          console.log("del success");
-        });
+        http.put("/review/like", likeJson).then(() => {});
       } else {
-        this.review.likeCount++;
+        this.myLikeCount++;
         this.isFilled = true;
-        http.post("/review/like", likeJson).then(() => {
-          console.log("post success");
-        });
+        http.post("/review/like", likeJson).then(() => {});
       }
     },
     updateHit() {
@@ -109,6 +145,12 @@ export default {
         }
       });
     },
+    getComments() {
+      const id = this.$route.params.rid;
+      http.get("/review/comments/" + id).then(({ data }) => {
+        this.comments = data.response;
+      });
+    },
 
     renderContentsWithImage(contents) {
       return contents;
@@ -121,6 +163,7 @@ export default {
   },
   created() {
     this.getDetail();
+    this.getComments();
   },
   mounted() {
     this.updateHit();
@@ -145,5 +188,13 @@ export default {
 }
 .bi-heart {
   color: crimson;
+}
+td {
+  word-wrap: break-word;
+  white-space: normal;
+}
+table {
+  table-layout: fixed;
+  width: 100%;
 }
 </style>
