@@ -2,7 +2,6 @@ import axios from "axios";
 
 function apiInstance(){
     const token = sessionStorage.getItem("access-token");
-    console.log(token);
     const instance = axios.create({
         baseURL: "http://localhost:8080",
         headers: {

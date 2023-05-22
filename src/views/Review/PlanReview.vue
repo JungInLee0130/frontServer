@@ -43,7 +43,10 @@
 </template>
 
 <script>
-import http from "@/api/http.js";
+import { apiInstance } from '@/api/lib/index';
+
+const http = apiInstance();
+
 export default {
   data() {
     return {
