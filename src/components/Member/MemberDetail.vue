@@ -58,7 +58,11 @@
 </template>
 
 <script>
-import http from '@/api/http.js';
+//import http from '@/api/http.js';
+import { apiInstance } from "@/api/lib/index.js";
+
+const http = apiInstance();
+
 export default {
     name: 'MemberDetail',
     data() {
