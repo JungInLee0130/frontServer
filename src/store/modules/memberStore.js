@@ -39,7 +39,7 @@ const memberStore={
                 member,
                 ({data}) => {
                     if (data.message === "success"){
-                        //console.log("success");   
+                        console.log("success");   
                         let accessToken = data["access-token"];
                         let refreshToken = data["refresh-token"];
                         console.log("login success token created!!!! >> ", accessToken, refreshToken);

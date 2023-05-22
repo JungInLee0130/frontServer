@@ -31,10 +31,9 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import { apiInstance } from "@/api/lib/index.js";
 
-const reviewStore = "reviewStore";
-//import http from "@/api/http.js";
+const http = apiInstance();
 export default {
   data() {
     return {
@@ -44,20 +43,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(reviewStore, ["getReviewAll"]),
-    async getDetail() {
+    getDetail() {
       const id = this.$route.params.rid;
+      http.get("/review/all/" + id).then(({ data }) => {
+        console.log(data.response);
+        this.review = data.response;
+        this.startDay = data.response.dailyList[0].reviewDate;
+      });
 
-      await this.getReviewAll(id);
-      // 기존
-      // http.get("/review/all/" + id).then(({ data }) => {
-      //   console.log(data.response);
-      //   this.review = data.response;
-      //   this.startDay = data.response.dailyList[0].reviewDate;
-      // });
-
-      // jwt 추가
-      
     },
 
     renderContentsWithImage(contents) {

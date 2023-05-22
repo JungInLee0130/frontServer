@@ -35,8 +35,9 @@
     </section>
 </template>
 <script>
-import http from "@/api/http.js";
 import MemberItem from "@/components/Member/MemberItem.vue";
+import { apiInstance } from '@/api/lib/index';
+const http = apiInstance();
 export default {
     name: "MemberList",
     components: {
@@ -55,13 +56,16 @@ export default {
             this.memberList();
         },
         memberList() {
+            console.log("memberlist 실행");
             http
                 .get("/memberlist")
                 .then(({ data }) => {
+                    console.log("memberlist 실행됨");
                     this.members = data;
                     console.log(data);
                 })
                 .catch((error) => {
+                    console.log("memberlist 실행 에러");
                     console.log(error);
                 });
         },

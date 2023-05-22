@@ -71,14 +71,12 @@ export default {
         };
     },
     created() {
-        let memberId = this.$route.params.memberId;
-        console.log(memberId);
-        this.memberDetail(memberId);
+        this.memberDetail();
     },
     methods: {
-        memberDetail(id) {
+        memberDetail() {
             http
-                .get(`/memberdetail/${id}`)
+                .get(`/memberdetail`)
                 .then(({ data }) => {
                     console.log(data);
                     this.member = data;
