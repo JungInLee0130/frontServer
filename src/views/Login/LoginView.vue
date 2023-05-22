@@ -10,14 +10,12 @@
                     <div class="input_item">
                         <label for="id" class="icon_id">UserId</label>
                         <input type="text" class="input_item_memberId" id="memberId" v-model="member.memberId"
-                            placeholder="UserId"
-                            @keyup.enter="confirm" />
+                            placeholder="UserId" @keyup.enter="confirm" />
                     </div>
                     <div class="input_item">
                         <label for="password" class="icon_password">Password</label>
                         <input type="password" class="input_item_password" id="password" v-model="member.password"
-                            placeholder="Password"
-                            @keyup.enter="confirm" />
+                            placeholder="Password" @keyup.enter="confirm" />
                     </div>
                 </div>
                 <div class="check_wrap">
@@ -30,7 +28,7 @@
                     <button class="btn-login" @click="confirm">Log In</button>
                 </div>
                 <div class="text-center">
-                    <button class="btn-join-login" v-on:click="join()">Sign Up</button>
+                    <button class="btn-join-login" v-on:click="sendMemberId()">Sign Up</button>
                 </div>
 
             </div>
@@ -40,7 +38,7 @@
 </template>
 
 <script>
-import {mapState, mapActions} from "vuex";
+import { mapState, mapActions } from "vuex";
 
 const memberStore = "memberStore";
 
@@ -49,34 +47,42 @@ export default {
     data() {
         return {
             // isLoginError: false,
-            member:{
+            member: {
                 memberId: null,
                 password: null,
             }
         }
     },
     // 여기서 송신인듯
-    
-    computed:{
+
+    computed: {
         ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
     },
     methods: {
-        ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
-        async confirm(){
-            console.log(this.member.memberId, this.member.password);
+        ...mapActions(memberStore, ["userConfirm", "getUserInfo", "memberIdGo"]),
+        async confirm() {
             await this.userConfirm(this.member);
-            
+
             let token = sessionStorage.getItem("access-token");
-            console.log ("token : " + token);
-            if (this.isLogin){
+            console.log("1 : token : " + token);
+            if (this.isLogin) {
                 await this.getUserInfo(token);
-                this.$router.push({name: "home"});
+                this.$router.push({ name: "home" });
             }
-            else{
+            else {
                 alert("등록되지 않은 사용자입니다. 회원가입을 해주세요.")
             }
         },
-        
+
+        async sendMemberId() {
+            console.log(1);
+            let token = sessionStorage.getItem("access-token");
+            console.log(token)
+            await this.memberIdGo(token);
+            //console.log(2);
+        },
+
+
         join() {
             this.$router.push(`/join`);
         },

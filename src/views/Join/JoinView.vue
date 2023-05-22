@@ -4,16 +4,15 @@
         <div class="wrapper-join">
             <div class="join-wrap">
                 <label class="label-memberId">MemberId : </label>
-                <input class="input-memberId" type="text" name="memberId" width="50" v-model="memberId"
-                    v-on:keyup="checkIdCondition(memberId)" />
-                <span class="btn-duplicatedIdCheck-wrapper">
-                    <b-button class="btn-duplicatedIdCheck" variant="btn btn-danger"
-                        v-on:click="duplicatedIdCheck(memberId)">Check Id
+                <input class="input-memberId" type="text" name="memberId" width="50" v-model="memberId" />
+                <!-- v-on:keyup="checkIdCondition(memberId)" -->
+                <span class="btn-checkId-wrapper">
+                    <b-button class="btn-checkId" variant="btn btn-danger" v-on:click="checkId(memberId)">Check Id
                     </b-button>
                 </span>
             </div>
 
-            <div class="join-id-condition">
+            <!-- <div class="join-id-condition">
                 <div v-if="idCondition == '0'"></div>
                 <div v-if="idCondition == '1'">
                     <p style="color: green">올바른 아이디입니다.</p>
@@ -21,7 +20,7 @@
                 <div v-if="idCondition == '-1'">
                     <p style="color: red">올바른 아이디가 아닙니다.</p>
                 </div>
-            </div>
+            </div> -->
 
 
             <div class="join-wrap">
@@ -114,45 +113,53 @@ export default {
             message: "",
             idCondition: "",
             duplicatedId: "",
-            duplicatedNickname: "",
+            //duplicatedNickname: "",
             passwordCondition: "",
             passwordIdentify: "",
-            phoneNumberCondition: "",
+            //phoneNumberCondition: "",
         };
     },
     methods: {
         join() {
-            
-            let data = {
-                memberId: this.memberId,
-                nickname: this.memberId,
-                password: this.password,
-                emailId: this.emailId,
-                emailDomain: this.emailDomain,
-                phoneNumber: this.phoneNumber,
-                password_again: this.password_again,
-            };
-            // 데이터는 이미 data(not this.data)를 담아서 백으로 보냄
-            http
-                .post(`/join`, data)
-                .then(({ data }) => {
-                    console.log(data); // 1: 성공시
-                    if (data != null) {
-                        alert("회원가입이 완료되었습니다.");
-                        this.$router.push(`/`);
-                    } else {
+            if (this.idCondition == 1
+                && this.passwordCondition == 1
+                && this.duplicatedId == 1
+                && this.passwordIdentify == 1) {
+                let data = {
+                    memberId: this.memberId,
+                    nickname: this.memberId,
+                    password: this.password,
+                    emailId: this.emailId,
+                    emailDomain: this.emailDomain,
+                    phoneNumber: this.phoneNumber,
+                    password_again: this.password_again,
+                };
+                // 데이터는 이미 data(not this.data)를 담아서 백으로 보냄
+                http
+                    .post(`/join`, data)
+                    .then(({ data }) => {
+                        console.log(data); // 1: 성공시
+                        if (data != null) {
+                            alert("회원가입이 완료되었습니다.");
+                            this.$router.push(`/`);
+                        } else {
+                            alert("중복된 회원입니다."); // 임시
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
                         alert("중복된 회원입니다."); // 임시
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    alert("중복된 회원입니다."); // 임시
-                });
+                    });
+            }
+            else {
+                alert("회원가입 조건을 다시 확인해주세요.");
+            }
         },
         checkIdCondition(memberId) {
             //console.log(memberId);
             // 대문자, 소문자, 숫자로만 아이디
             this.memberId = memberId;
+            // 0 : 아무것도 입력안함
             if (memberId.length == 0) {
                 this.idCondition = "0";
                 return;
@@ -168,19 +175,20 @@ export default {
                 if ("A" <= memberId.charAt(i) && memberId.charAt(i) <= "Z") {
                     continue;
                 }
+                // -1 : 특수문자 들어감
                 this.idCondition = "-1";
                 return;
             }
-            this.idCondition = "1";
+            this.idCondition = "1";// 정상
         },
         checkPasswordCondition(password) {
             this.password = password;
             if (password.length == 0) {
-                // 아무것도 입력 안함.
+                // 0: 아무것도 입력 안함.
                 this.passwordCondition = "0";
                 return;
             }
-            // 오류 2 : 비밀번호는 8자리이상입니다.
+            // -2 : 비밀번호는 8자리이상입니다.
             if (0 < password.length && password.length < 8) {
                 this.passwordCondition = "-2";
                 return;
@@ -197,10 +205,11 @@ export default {
                     if ("A" <= password.charAt(i) && password.charAt(i) <= "Z") {
                         continue;
                     }
-                    // 오류 1: 비밀번호는 영문, 숫자 조합 8자 이상 입력해 주세요.
+                    // -1 : 비밀번호는 영문, 숫자 조합 8자 이상 입력해 주세요.
                     this.passwordCondition = "-1";
                     return;
                 }
+                // 1 : 사용가능
                 this.passwordCondition = "1";
             }
         },
@@ -217,30 +226,56 @@ export default {
                 this.passwordIdentify = "-1";
                 return;
             }
+            // 1: 사용가능
             this.passwordIdentify = "1";
         },
 
-        duplicatedIdCheck(str) { // 아이디 특수문자도 걸러냄
-            console.log(str);
-            // id 중복체크
+        // 아이디 특수문자도 걸러냄
+        checkId(str) {
+            // 1. 아이디 조건 체크
+            this.memberId = str;
+            // 아무것도 입력안함
+            if (str.length == 0) {
+                this.idCondition = "0";
+                alert("아이디를 입력해주세요.")
+                return;
+            }
+
+            for (let i = 0; i < str.length; i++) {
+                if ("0" <= str.charAt(i) && str.charAt(i) <= "9") {
+                    continue;
+                }
+                if ("a" <= str.charAt(i) && str.charAt(i) <= "z") {
+                    continue;
+                }
+                if ("A" <= str.charAt(i) && str.charAt(i) <= "Z") {
+                    continue;
+                }
+                this.idCondition = "-1"; // 특수문자 들어감
+                alert("특수문자는 사용할 수 없습니다.")
+                return;
+            }
+            this.idCondition = "1";// 정상
+
+            // 2. idCondition == 1 && id 중복체크
             http.get(`/check/${str}`)
                 .then(({ data }) => {
                     console.log(data.memberId);
 
-                    if (str.length == 0) {
-                        this.duplicatedId = '-2';
-                    }
-                    else if (str == data.memberId) {
+                    // if (str.length == 0) {
+                    //     this.duplicatedId = '-2';
+                    // }
+                    if (str == data.memberId) {
                         this.duplicatedId = '-1'
                         alert("중복된 아이디 입니다.");
                     }
                     else {
+                        // 1: 사용가능
                         this.duplicatedId = '1'
                         alert("사용할 수 있는 아이디입니다.");
                     }
                 }).catch(function (error) {
                     console.log(error);
-                    alert("아이디를 입력해주세요.")
                 });
         },
         // duplicatedNicknameCheck(str) {
@@ -334,7 +369,7 @@ export default {
     margin-right: 15px;
 }
 
-.btn-duplicatedIdCheck {
+.btn-checkId {
     height: 75%;
     width: 100%;
 }

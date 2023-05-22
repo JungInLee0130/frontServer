@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
 import router from "@/router";
-import { login, findById, tokenRegeneration, logout} from "@/api/memberlib/member.js";
+import { login, findById, tokenRegeneration, logout, getMemberId} from "@/api/memberlib/member.js";
 
 const memberStore={
     namespaced:true,
@@ -66,6 +66,7 @@ const memberStore={
         async getUserInfo({commit, dispatch}, token){
             // 토큰 디코딩
             let decodeToken = jwtDecode(token);
+            console.log("2 : " + token);
             console.log("getUserInfo 디코드토큰:", decodeToken);
             // 토큰 형식 : memberId만 담고있음
             await findById(
@@ -147,6 +148,23 @@ const memberStore={
                     }
             );
         },
+        async memberIdGo({commit},token){
+            console.log("2 : " + token);
+            await getMemberId(
+                token,
+                ({data}) =>{
+                    if (data.message === "success"){
+                        console.log("userid 전송 완료");
+                    }
+                    else{
+                        console.log("실패");
+                    }
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+        }
     },
 };
 

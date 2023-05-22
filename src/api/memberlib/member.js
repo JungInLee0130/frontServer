@@ -12,6 +12,16 @@ async function findById(memberId, success, fail) { // findbyid : 유저 dto 리�
   await api.get(`/info/${memberId}`).then(success).catch(fail);
 }
 
+async function getMemberId(token,success,fail){
+  console.log(3);
+  let accessTokenDto = {
+    accessToken: token,
+  }
+  console.log(accessTokenDto.accessToken);
+  //api.defaults.header["access-token"] = sessionStorage.getItem("access-token");
+  await api.post(`/token`, accessTokenDto).then(success).catch(fail);
+}
+
 async function tokenRegeneration(member, success, fail) {
   api.defaults.headers["refresh-token"] = sessionStorage.getItem("refresh-token"); //axios header에 refresh-token 셋팅
   await api.post(`/refresh`, member).then(success).catch(fail);
@@ -22,4 +32,4 @@ async function logout(memberId, success, fail) {
 }
 
 
-export { login, findById, tokenRegeneration, logout};
+export { login, findById, tokenRegeneration, logout, getMemberId};

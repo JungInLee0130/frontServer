@@ -11,8 +11,8 @@
                             <tr>
                                 <th scope="col">Order</th>
                                 <th scope="col">MemberId</th>
-                                <th scope="col">Nickname</th>
                                 <th scope="col">Password</th>
+                                <th scope="col">Nickname</th>
                                 <th scope="col">EmailId</th>
                                 <th scope="col">EmailDomain</th>
                                 <th scope="col">Phonenumber</th>
