@@ -32,8 +32,7 @@
 </template>
 
 <script>
-import { apiInstance } from "@/api/lib/index.js";
-const http = apiInstance();
+import http from "@/api/lib/axios.js";
 import axios from "axios";
 export default {
   data() {
