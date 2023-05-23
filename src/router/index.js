@@ -32,10 +32,10 @@ const onlyAuthUser = async (to, from, next) =>{
   const checkUserInfo = store.getters["memberStore/checkUserInfo"];
   const checkToken = store.getters["memberStore/checkToken"];
   let token = sessionStorage.getItem("access-token");
-  console.log("로그인 처리 전", checkUserInfo, token);
+  console.log("로그인 처리 전", checkUserInfo);
 
   if (checkUserInfo != null && token){
-    console.log("토큰 유효성 체크");
+    //console.log("토큰 유효성 체크");
     await store.dispatch("memberStore/getUserInfo", token);
   }
   if (!checkToken || checkUserInfo === null){

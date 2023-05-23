@@ -64,7 +64,7 @@ export default {
             await this.userConfirm(this.member);
 
             let token = sessionStorage.getItem("access-token");
-            console.log("1 : token : " + token);
+            //console.log("1 : token : " + token);
             if (this.isLogin) {
                 await this.getUserInfo(token);
                 this.$router.push({ name: "home" });
@@ -75,9 +75,9 @@ export default {
         },
 
         async sendMemberId() {
-            console.log(1);
+            //console.log(1);
             let token = sessionStorage.getItem("access-token");
-            console.log(token)
+            //console.log(token)
             await this.memberIdGo(token);
             //console.log(2);
         },

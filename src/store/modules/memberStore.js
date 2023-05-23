@@ -39,10 +39,10 @@ const memberStore={
                 member,
                 ({data}) => {
                     if (data.message === "success"){
-                        console.log("success");   
+                        //console.log("success");   
                         let accessToken = data["access-token"];
                         let refreshToken = data["refresh-token"];
-                        console.log("login success token created!!!! >> ", accessToken, refreshToken);
+                        //console.log("login success token created!!!! >> ", accessToken, refreshToken);
                         // action -> commit -> mutation -> state
                         commit("SET_IS_LOGIN", true);
                         commit("SET_IS_LOGIN_ERROR", false);
@@ -66,16 +66,16 @@ const memberStore={
         async getUserInfo({commit, dispatch}, token){
             // 토큰 디코딩
             let decodeToken = jwtDecode(token);
-            console.log("getUserInfo 디코드토큰:", decodeToken);
+            //console.log("getUserInfo 디코드토큰:", decodeToken);
             // 토큰 형식 : memberId만 담고있음
             await findById(
                 decodeToken.memberId,
                 ({data}) => {
                     // 성공하면 : 반환은 dto, success, userinfo
-                    console.log(data);
+                    //console.log(data);
                     if (data.message === "success"){
                         commit("SET_USER_INFO", data.userInfo);
-                        console.log("getUserInfo data: ", data.userInfo);
+                        //console.log("getUserInfo data: ", data.userInfo);
                     } else{
                         console.log("유저 정보 없음!!!!");
                     }
@@ -95,7 +95,7 @@ const memberStore={
                 ({data}) =>{
                     if (data.message === "success"){
                         let accessToken = data["access-token"];
-                        console.log("재발급 완료 >> 새로운 토큰 : {}", accessToken);
+                        //console.log("재발급 완료 >> 새로운 토큰 : {}", accessToken);
                         sessionStorage.setItem("access-token", accessToken);
                         commit("SET_IS_VALID_TOKEN", true);
                     }
