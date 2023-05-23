@@ -109,9 +109,9 @@ const memberStore={
                             state.userInfo.memberId,
                             ({data}) =>{
                                 if (data.message === "success"){
-                                    console.log("리프레시 토큰 제거 성공");
+                                    alert("리프레시 토큰 제거 성공");
                                 } else{
-                                    console.log("리프레시 토큰 제거 실패");
+                                    alert("리프레시 토큰 제거 실패");
                                 }
                                 alert("refreshtoken 기간 만료!!! 다시 로그인 해주세요.");
                                 state.memberStore.isLogin = false;

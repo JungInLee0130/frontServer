@@ -37,6 +37,8 @@
 <script>
 import MemberItem from "@/components/Member/MemberItem.vue";
 import { apiInstance } from '@/api/lib/index';
+import {mapActions} from 'vuex';
+const memberStore = "memberStore";
 const http = apiInstance();
 export default {
     name: "MemberList",
@@ -52,6 +54,7 @@ export default {
         this.memberList();
     },
     methods: {
+        ...mapActions(memberStore,["tokenRegeneration"]),
         deleteMember() {
             this.memberList();
         },
@@ -67,6 +70,10 @@ export default {
                 .catch((error) => {
                     console.log("memberlist 실행 에러");
                     console.log(error);
+                    if (this.$store.state.memberStore.isValidToken == false){
+                        alert("토큰 만료. 엑세스 토큰 재발급.");
+                        this.tokenRegeneration();                          
+                    }
                 });
         },
     },
