@@ -47,6 +47,12 @@
             <td>
               {{ comment.contents }}
             </td>
+            <td
+              v-if="comment.member_id === $store.state.memberStore.userInfo.memberId"
+              class="button-wrapper"
+            >
+              <button>X</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -58,7 +64,6 @@
           v-model="commentsContents"
         ></textarea>
       </div>
-      <div></div>
       <div style="height: 10px"></div>
       <button class="buttonCustom" style="float: right" @click="postComments">Comment</button>
       <!-- 댓글 끝-->
@@ -197,5 +202,14 @@ td {
 table {
   table-layout: fixed;
   width: 100%;
+}
+.button-wrapper {
+  position: relative;
+}
+.button-wrapper button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: crimson;
 }
 </style>
