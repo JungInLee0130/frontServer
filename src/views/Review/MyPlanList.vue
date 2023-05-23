@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     getList() {
-      http.get("/review/xx").then(({ data }) => {
+      http.get("/review/myplan").then(({ data }) => {
         this.plans = data.response;
       });
     },
