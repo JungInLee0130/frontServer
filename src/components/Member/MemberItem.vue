@@ -50,10 +50,10 @@ export default {
 
     methods: {
         memberDetail(memberId) {
-            this.$router.push(`/admin/memberdetail`);
+            this.$router.push(`/admin/memberdetail/${memberId}`);
         },
         adminUpdate(memberId) {
-            this.$router.push(`/admin/adminupdate`);
+            this.$router.push(`/admin/adminupdate/${memberId}`);
         },
         adminDelete(id) { // 버튼 클릭시 삭제
             http.delete(`/memberDelete/${id}`).then(({ data }) => {

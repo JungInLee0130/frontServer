@@ -74,7 +74,7 @@ export default {
   },
   created() {
     let memberId = this.$route.params.memberId;
-    console.log(memberId);
+    //console.log(memberId);
     this.memberDetail(memberId); // detail 정보 미리 표시
   },
   methods: {
