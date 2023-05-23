@@ -32,26 +32,7 @@
                         <input class="input-phoneNumber" type="text" name="phoneNumber" width="50"
                                 v-model="member.phoneNumber" />
                     </div>
-
-                    <div class = "detail-wrap">
-                        <label class="label-createdAt">createdAt : </label>
-                        <input class="input-createdAt" type="text" name="createdAt" readonly="readonly" width="50"
-                                v-model="member.createdAt" />
-                        
-                    </div>
-                    <div class = "detail-wrap">
-                        <label class="label-modifiedAt">modifiedAt : </label>
-                        <input class="input-modifiedAt" type="text" name="modifiedAt" readonly="readonly" width="50"
-                                v-model="member.modifiedAt" />
-                        
-                    </div>
-
-                    <div class = "detail-wrap">
-                        <label class="label-memberRole">memberRole : </label>
-                        <input class="input-memberRole" type="text" name="memberRole" readonly="readonly" width="50"
-                                v-model="member.memberRole" />
-                        
-                    </div> 
+                    
                     <div class="text-center">
                       <button type="button" class="btn-update btn btn-primary" v-on:click="adminUpdate()">
                         수정
@@ -63,22 +44,23 @@
 </template>
 
 <script>
-import http from "@/api/http.js";
+import { apiInstance } from '@/api/lib/index';
+const http = apiInstance();
+
 export default {
   name: "AdminUpdate",
   data() {
     return {
-      //message: '',
       member: [], // 한사람 정보
     };
   },
   created() {
     let memberId = this.$route.params.memberId;
-    //console.log(memberId);
-    this.memberDetail(memberId); // detail 정보 미리 표시
+    console.log(memberId);
+    this.memberDetail(memberId);
   },
   methods: {
-    memberDetail(id) {
+    memberDetail(id) { // update생성시
       http
         .get(`/memberdetail/${id}`)
         .then(({ data }) => {

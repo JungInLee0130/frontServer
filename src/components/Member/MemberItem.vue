@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import http from '@/api/http.js';
+import { apiInstance } from '@/api/lib/index';
+const http = apiInstance();
 export default {
     name: 'MemberItem',
     props: {
@@ -41,12 +42,9 @@ export default {
         };
     },
     created() {
-
+        console.log("2 " + this.member.memberId);
     },
 
-    mounted() {
-
-    },
 
     methods: {
         memberDetail(memberId) {
@@ -57,15 +55,7 @@ export default {
         },
         adminDelete(id) { // 버튼 클릭시 삭제
             http.delete(`/memberDelete/${id}`).then(({ data }) => {
-                console.log(data.message);
                 alert("성공적으로 삭제했습니다.");
-                // if (this.message === 1) {
-                //     // this.$router.push(`/admin/memberlist`)
-                    
-                // }
-                // else {
-                //     alert("삭제에 실패했습니다.");
-                // }
                 this.$emit('dm');
             })
         },

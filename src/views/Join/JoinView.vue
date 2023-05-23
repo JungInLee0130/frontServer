@@ -5,43 +5,19 @@
             <div class="join-wrap">
                 <label class="label-memberId">MemberId : </label>
                 <input class="input-memberId" type="text" name="memberId" width="50" v-model="memberId" />
-                <!-- v-on:keyup="checkIdCondition(memberId)" -->
                 <span class="btn-checkId-wrapper">
                     <b-button class="btn-checkId" variant="btn btn-danger" v-on:click="checkId(memberId)">Check Id
                     </b-button>
                 </span>
             </div>
 
-            <!-- <div class="join-id-condition">
-                <div v-if="idCondition == '0'"></div>
-                <div v-if="idCondition == '1'">
-                    <p style="color: green">올바른 아이디입니다.</p>
-                </div>
-                <div v-if="idCondition == '-1'">
-                    <p style="color: red">올바른 아이디가 아닙니다.</p>
-                </div>
-            </div> -->
 
 
             <div class="join-wrap">
                 <label class="label-nickname">nickname : </label>
-                <input class="input-nickname" type="text" name="nickname" width="50" v-model="nickname" />
-                <!-- <span class="btn-duplicatedNicknameCheck-wrapper">
-                    <b-button class="btn-duplicatedNicknameCheck" variant="btn btn-danger"
-                        v-on:click="duplicatedNicknameCheck(nickname)">Check Nickname
-                    </b-button>
-                </span> -->
+                <input class="input-nickname" type="text" name="nickname" width="50" v-model="nickname" />   
             </div>
 
-            <!-- <div class="join-nickname-dupl">
-                <div v-if="duplicatedNickname"></div>
-                <div v-if="duplicatedNickname == '1'">
-                    <p style="color: green">올바른 아이디입니다.</p>
-                </div>
-                <div v-if="duplicatedNickname == '-1'">
-                    <p style="color: red"></p>
-                </div>
-            </div> -->
 
             <div class="join-wrap">
                 <label class="label-password">password : </label>
@@ -105,7 +81,8 @@
 </template>
 
 <script>
-import http from "@/api/http.js";
+import { apiInstance } from '@/api/lib/index';
+const http = apiInstance();
 export default {
     name: "JoinView",
     data() {
@@ -113,14 +90,16 @@ export default {
             message: "",
             idCondition: "",
             duplicatedId: "",
-            //duplicatedNickname: "",
             passwordCondition: "",
             passwordIdentify: "",
-            //phoneNumberCondition: "",
         };
     },
     methods: {
         join() {
+            console.log(this.idCondition);
+            console.log(this.passwordCondition);
+            console.log(this.duplicatedId);
+            console.log(this.passwordIdentify);
             if (this.idCondition == 1
                 && this.passwordCondition == 1
                 && this.duplicatedId == 1
@@ -154,32 +133,6 @@ export default {
             else {
                 alert("회원가입 조건을 다시 확인해주세요.");
             }
-        },
-        checkIdCondition(memberId) {
-            //console.log(memberId);
-            // 대문자, 소문자, 숫자로만 아이디
-            this.memberId = memberId;
-            // 0 : 아무것도 입력안함
-            if (memberId.length == 0) {
-                this.idCondition = "0";
-                return;
-            }
-
-            for (let i = 0; i < memberId.length; i++) {
-                if ("0" <= memberId.charAt(i) && memberId.charAt(i) <= "9") {
-                    continue;
-                }
-                if ("a" <= memberId.charAt(i) && memberId.charAt(i) <= "z") {
-                    continue;
-                }
-                if ("A" <= memberId.charAt(i) && memberId.charAt(i) <= "Z") {
-                    continue;
-                }
-                // -1 : 특수문자 들어감
-                this.idCondition = "-1";
-                return;
-            }
-            this.idCondition = "1";// 정상
         },
         checkPasswordCondition(password) {
             this.password = password;
@@ -232,6 +185,7 @@ export default {
 
         // 아이디 특수문자도 걸러냄
         checkId(str) {
+            console.log(str);
             // 1. 아이디 조건 체크
             this.memberId = str;
             // 아무것도 입력안함
@@ -262,9 +216,6 @@ export default {
                 .then(({ data }) => {
                     console.log(data.memberId);
 
-                    // if (str.length == 0) {
-                    //     this.duplicatedId = '-2';
-                    // }
                     if (str == data.memberId) {
                         this.duplicatedId = '-1'
                         alert("중복된 아이디 입니다.");
