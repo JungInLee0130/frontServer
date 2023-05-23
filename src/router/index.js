@@ -37,7 +37,7 @@ const onlyAuthUser = async (to, from, next) => {
   let token = sessionStorage.getItem("access-token");
   console.log("로그인 처리 전", checkUserInfo);
 
-  if (checkUserInfo != null && token) {
+  if (checkUserInfo != null && token){
     //console.log("토큰 유효성 체크");
     await store.dispatch("memberStore/getUserInfo", token);
   }
@@ -124,13 +124,13 @@ const routes = [
         component: MemberList,
       },
       {
-        path: "memberdetail",
+        path: "memberdetail/:memberId",
         name: "memberdetail",
         component: MemberDetail,
       },
       {
-        path: "adminupdate",
-        name: "AdminUpdate",
+        path: "adminupdate/:memberId",
+        name: "adminupdate",
         component: AdminUpdate,
       },
     ],

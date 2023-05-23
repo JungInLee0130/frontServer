@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import http from '@/api/http.js';
+import http from '@/api/lib/axios.js';
 export default {
     name: 'MemberItem',
     props: {
@@ -41,31 +41,20 @@ export default {
         };
     },
     created() {
-
+        console.log("2 " + this.member.memberId);
     },
 
-    mounted() {
-
-    },
 
     methods: {
         memberDetail(memberId) {
-            this.$router.push(`/admin/memberdetail`);
+            this.$router.push(`/admin/memberdetail/${memberId}`);
         },
         adminUpdate(memberId) {
-            this.$router.push(`/admin/adminupdate`);
+            this.$router.push(`/admin/adminupdate/${memberId}`);
         },
         adminDelete(id) { // 버튼 클릭시 삭제
             http.delete(`/memberDelete/${id}`).then(({ data }) => {
-                console.log(data.message);
                 alert("성공적으로 삭제했습니다.");
-                // if (this.message === 1) {
-                //     // this.$router.push(`/admin/memberlist`)
-                    
-                // }
-                // else {
-                //     alert("삭제에 실패했습니다.");
-                // }
                 this.$emit('dm');
             })
         },
