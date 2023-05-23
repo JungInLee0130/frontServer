@@ -129,7 +129,7 @@ const routes = [
         component: MemberDetail,
       },
       {
-        path: "adminupdate",
+        path: "adminupdate/:memberId",
         name: "adminupdate",
         component: AdminUpdate,
       },

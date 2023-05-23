@@ -44,8 +44,9 @@
 </template>
 
 <script>
-import { apiInstance } from '@/api/lib/index';
-const http = apiInstance();
+import http from '@/api/lib/axios';
+
+//const http = apiInstance();
 
 export default {
   name: "AdminUpdate",
@@ -58,6 +59,7 @@ export default {
     let memberId = this.$route.params.memberId;
     console.log(memberId);
     this.memberDetail(memberId);
+    console.log(this.member.memberId);
   },
   methods: {
     memberDetail(id) { // update생성시

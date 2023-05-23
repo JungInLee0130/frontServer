@@ -81,17 +81,16 @@
 </template>
 
 <script>
-import { apiInstance } from '@/api/lib/index';
-const http = apiInstance();
+import http from "@/api/lib/axios";
 export default {
     name: "JoinView",
     data() {
         return {
             message: "",
-            idCondition: "",
-            duplicatedId: "",
-            passwordCondition: "",
-            passwordIdentify: "",
+            idCondition: "0",
+            duplicatedId: "0",
+            passwordCondition: "0",
+            passwordIdentify: "0",
         };
     },
     methods: {
@@ -229,25 +228,6 @@ export default {
                     console.log(error);
                 });
         },
-        // duplicatedNicknameCheck(str) {
-        //     console.log(this.memberId);
-        //     // 닉네임 중복체크
-        //     http.get(`/check/${this.memberId}`)
-        //         .then(({ data }) => {
-        //             console.log(data.nickname, str);
-        //             if (str == data.nickname) {
-        //                 this.duplicatedNickname = '-1';
-        //                 alert("중복된 닉네임 입니다.");
-        //             }
-        //             else {
-        //                 this.duplicatedNickname = '1';
-        //                 alert("사용할 수 있는 닉네임입니다.");
-        //             }
-        //         }).catch(function (error) {
-        //             console.log(error);
-        //             alert("닉네임을 입력해주세요."); // 임시
-        //         });
-        // },
 
     },
     computed: {
