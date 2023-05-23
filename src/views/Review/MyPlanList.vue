@@ -47,7 +47,8 @@
 </template>
 
 <script>
-import http from "@/api/http.js";
+import { apiInstance } from "@/api/lib/index.js";
+const http = apiInstance();
 export default {
   data() {
     return {
@@ -56,7 +57,7 @@ export default {
   },
   methods: {
     getList() {
-      http.get("/review/xx").then(({ data }) => {
+      http.get("/review/myplan").then(({ data }) => {
         this.plans = data.response;
       });
     },

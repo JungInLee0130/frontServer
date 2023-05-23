@@ -119,7 +119,8 @@
 </template>
 
 <script>
-import http from "@/api/http.js";
+import { apiInstance } from "@/api/lib/index.js";
+const http = apiInstance();
 export default {
   name: "KakaoMap",
   data() {
@@ -225,12 +226,14 @@ export default {
       let contents = this.fcontent;
       let start_date = this.startDate;
       let end_date = this.endDate;
+      let member_id = this.$store.state.memberStore.userInfo.memberId;
 
       const nowArr = this.text1;
       const arr2 = nowArr.map((innerArr) => innerArr.map((obj) => obj.content_id));
       console.log(arr2);
 
       let finalJSON = {
+        member_id: member_id,
         title: title,
         start_date: start_date,
         end_date: end_date,
