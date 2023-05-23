@@ -39,7 +39,7 @@ const memberStore={
                 member,
                 ({data}) => {
                     if (data.message === "success"){
-                        console.log("success");   
+                        //console.log("success");   
                         let accessToken = data["access-token"];
                         let refreshToken = data["refresh-token"];
                         console.log("login success token created!!!! >> ", accessToken, refreshToken);
@@ -95,7 +95,7 @@ const memberStore={
                 ({data}) =>{
                     if (data.message === "success"){
                         let accessToken = data["access-token"];
-                        console.log("재발급 완료 >> 새로운 토큰 : {}", accessToken);
+                        //console.log("재발급 완료 >> 새로운 토큰 : {}", accessToken);
                         sessionStorage.setItem("access-token", accessToken);
                         commit("SET_IS_VALID_TOKEN", true);
                     }
