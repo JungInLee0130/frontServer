@@ -18,6 +18,7 @@ instance.interceptors.request.use(
     // return config;
     if (sessionStorage.getItem("access-token") !== null) {
       config.headers["access-token"] = sessionStorage.getItem("access-token");
+      config.headers["refresh-token"] = sessionStorage.getItem("refresh-token");
       // console.log(config);
       return config;
     } else {
