@@ -58,6 +58,7 @@
           v-model="commentsContents"
         ></textarea>
       </div>
+      <div></div>
       <div style="height: 10px"></div>
       <button class="buttonCustom" style="float: right" @click="postComments">Comment</button>
       <!-- 댓글 끝-->
