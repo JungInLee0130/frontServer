@@ -43,8 +43,15 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import { apiInstance } from "@/api/lib/index.js";
 const http = apiInstance();
+=======
+import { apiInstance } from '@/api/lib/index';
+
+const http = apiInstance();
+
+>>>>>>> 48cc44ec22fb5e0a4ed67e1e368f5609492e6209
 export default {
   data() {
     return {

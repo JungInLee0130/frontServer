@@ -35,10 +35,15 @@ const onlyAuthUser = async (to, from, next) => {
   const checkUserInfo = store.getters["memberStore/checkUserInfo"];
   const checkToken = store.getters["memberStore/checkToken"];
   let token = sessionStorage.getItem("access-token");
-  console.log("로그인 처리 전", checkUserInfo, token);
+  console.log("로그인 처리 전", checkUserInfo);
 
+<<<<<<< HEAD
   if (checkUserInfo != null && token) {
     console.log("토큰 유효성 체크");
+=======
+  if (checkUserInfo != null && token){
+    //console.log("토큰 유효성 체크");
+>>>>>>> 48cc44ec22fb5e0a4ed67e1e368f5609492e6209
     await store.dispatch("memberStore/getUserInfo", token);
   }
   if (!checkToken || checkUserInfo === null) {
@@ -124,12 +129,12 @@ const routes = [
         component: MemberList,
       },
       {
-        path: "memberdetail/:memberId",
+        path: "memberdetail",
         name: "memberdetail",
         component: MemberDetail,
       },
       {
-        path: "adminupdate/:memberId",
+        path: "adminupdate",
         name: "AdminUpdate",
         component: AdminUpdate,
       },

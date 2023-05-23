@@ -68,6 +68,10 @@
 
 <script>
 import { apiInstance } from "@/api/lib/index.js";
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48cc44ec22fb5e0a4ed67e1e368f5609492e6209
 const http = apiInstance();
 export default {
   data() {
@@ -85,6 +89,7 @@ export default {
   },
 
   methods: {
+<<<<<<< HEAD
     postComments() {
       const memberId = this.$store.state.memberStore.userInfo.memberId;
       const reviewId = this.$route.params.rid;
@@ -150,6 +155,16 @@ export default {
       http.get("/review/comments/" + id).then(({ data }) => {
         this.comments = data.response;
       });
+=======
+    getDetail() {
+      const id = this.$route.params.rid;
+      http.get("/review/all/" + id).then(({ data }) => {
+        console.log(data.response);
+        this.review = data.response;
+        this.startDay = data.response.dailyList[0].reviewDate;
+      });
+
+>>>>>>> 48cc44ec22fb5e0a4ed67e1e368f5609492e6209
     },
 
     renderContentsWithImage(contents) {
