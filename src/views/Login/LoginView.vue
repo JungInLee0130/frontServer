@@ -28,7 +28,7 @@
                     <button class="btn-login" @click="confirm">Log In</button>
                 </div>
                 <div class="text-center">
-                    <button class="btn-join-login" v-on:click="sendMemberId()">Sign Up</button>
+                    <button class="btn-join-login" v-on:click="join()">Sign Up</button>
                 </div>
 
             </div>
@@ -59,7 +59,7 @@ export default {
         ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
     },
     methods: {
-        ...mapActions(memberStore, ["userConfirm", "getUserInfo", "memberIdGo"]),
+        ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
         async confirm() {
             await this.userConfirm(this.member);
 
@@ -72,14 +72,6 @@ export default {
             else {
                 alert("등록되지 않은 사용자입니다. 회원가입을 해주세요.")
             }
-        },
-
-        async sendMemberId() {
-            //console.log(1);
-            let token = sessionStorage.getItem("access-token");
-            //console.log(token)
-            await this.memberIdGo(token);
-            //console.log(2);
         },
 
 
