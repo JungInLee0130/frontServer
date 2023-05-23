@@ -33,7 +33,7 @@ Vue.use(VueRouter);
 
 const onlyAuthUser = async (to, from, next) => {
   const checkUserInfo = store.getters["memberStore/checkUserInfo"];
-  const checkToken = store.getters["memberStore/checkToken"];
+  const checkToken = store.getters["memberStore/checkToken"]; // isvalidtoken
   let token = sessionStorage.getItem("access-token");
   console.log("로그인 처리 전", checkUserInfo);
 
