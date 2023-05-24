@@ -16,7 +16,8 @@
         <td>{{ member.memberRole }}</td>
         <td>
             <div class="btn-item">
-                <button type="button" id="btn-item-update" class="btn btn-primary" v-on:click="adminUpdate(member.memberId)">
+                <button type="button" id="btn-item-update" class="btn btn-primary"
+                    v-on:click="adminUpdate(member.memberId)">
                     Update
                 </button>
                 <button type="button" id="btn-item-delete" class="btn btn-danger" v-on:click="adminDelete(member.memberId)">
@@ -41,7 +42,7 @@ export default {
         };
     },
     created() {
-        console.log("2 " + this.member.memberId);
+        //console.log("2 " + this.member.memberId);
     },
 
 
@@ -63,10 +64,11 @@ export default {
 </script>
 
 <style scope>
-.btn-item{
+.btn-item {
     display: flex;
 }
-#btn-item-update, #btn-item-delete{
-    margin:2px;
-}
-</style>
+
+#btn-item-update,
+#btn-item-delete {
+    margin: 2px;
+}</style>

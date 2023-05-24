@@ -35,12 +35,11 @@ const memberStore={
     },
     actions:{
         async userConfirm({commit}, member){ // 로그인 할때 씀
-        
             await login(
                 member,
                 ({data}) => {
                     if (data.success){
-                        console.log(data);
+                        //console.log(data);
                         let accessToken = data.response["access-token"];
                         let refreshToken = data.response["refresh-token"];
                         
@@ -72,9 +71,8 @@ const memberStore={
                 decodeToken.memberId,
                 ({data}) => {
                     //console.log(data);
-                    if (data.message === "success"){
-                        commit("SET_USER_INFO", data.userInfo);
-                        //console.log("getUserInfo data: ", data.userInfo);
+                    if (data.success){
+                        commit("SET_USER_INFO", data.response);
                     } else{
                         console.log("유저 정보 없음!!!!");
                     }
