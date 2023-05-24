@@ -88,12 +88,11 @@ export default {
       await this.userLogout(this.member.memberId);
 
       this.$store.state.memberStore.isLogin = false;
-      // sessionStorage.removeItem("vuex");
-      // sessionStorage.removeItem("access-token");
-      // sessionStorage.removeItem("refresh-token");
+      sessionStorage.removeItem("vuex");
+      sessionStorage.removeItem("access-token");
+      sessionStorage.removeItem("refresh-token");
       if (this.$route.path != "/") this.$router.push({ name: "home" });
     },
-
   },
 };
 </script>

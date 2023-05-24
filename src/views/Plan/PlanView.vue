@@ -13,23 +13,46 @@
       </div>
       <div class="map_wrap" style="display: flex">
         <div id="map" style="width: 80%; height: 100%; position: relative; overflow: hidden"></div>
-        <div id="rightList" style="width: 20%; border-color: black; border-width: 3px">
+        <div id="rightList" style="width: 20%; overflow: auto">
           여행 계획 세우기
-          <div id="cardContainer" style="background: rgba(255, 255, 255, 0.3)">
-            <select
-              v-if="options.length > 0"
-              v-model="selectedOption"
-              @change="updateSelectedOptionData"
-            >
-              <option v-for="(option, i) in options" :value="option" :key="i">{{ option }}</option>
-            </select>
+          <select
+            v-if="options.length > 0"
+            v-model="selectedOption"
+            @change="updateSelectedOptionData"
+          >
+            <option v-for="(option, i) in options" :value="option" :key="i">{{ option }}</option>
+          </select>
+          <div id="cardContainer" style="max-height: 600px; overflow-y: auto">
             <ol class="rlist" v-if="selectedOption">
-              <li class="ritem" v-for="(opD, b) in selectedOptionData" :key="b">
-                <h2 class="rheadline">
+              <li
+                class="ritem"
+                v-for="(opD, b) in selectedOptionData"
+                :key="b"
+                style="
+                  background-color: #f5f5f5;
+                  padding: 10px;
+                  margin-bottom: 10px;
+                  border-radius: 5px;
+                "
+              >
+                <h2 class="rheadline" style="font-size: 18px; margin-bottom: 5px">
                   {{ opD.title }}
                 </h2>
-                <span>{{ opD.addr1 }}</span>
-                <button @click="deleteArr(b)">삭제</button>
+                <span style="font-size: 14px">{{ opD.addr1 }}</span>
+                <button
+                  @click="deleteArr(b)"
+                  style="
+                    margin-left: 10px;
+                    padding: 5px 10px;
+                    background-color: #e74c3c;
+                    color: white;
+                    border: none;
+                    border-radius: 3px;
+                    cursor: pointer;
+                  "
+                >
+                  삭제
+                </button>
               </li>
             </ol>
           </div>

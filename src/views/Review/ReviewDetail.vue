@@ -17,7 +17,9 @@
         <div v-for="(reviewDay, i) in review.dailyList" :key="i">
           <div class="col-md-6">
             <div class="info-item d-flex align-items-center">
-              <div class="flex-shrink-0">Day {{ i + 1 }}</div>
+              <div style="padding-right: 20px; text-emphasis: 10px" class="flex-shrink-0">
+                <strong>Day {{ i + 1 }}</strong>
+              </div>
               <div>
                 <p>
                   {{ reviewDay.attractionName.join(" -> ") }}
@@ -31,8 +33,8 @@
           <!-- End Info Item -->
         </div>
       </div>
-
-      <div v-if="isOwner">
+      <div style="height: 30px"></div>
+      <div style="float: right" v-if="isOwner">
         <button class="buttonCustom" @click="deleteReview">Delete</button>
         <button class="buttonCustom" @click="modifyReview">Modify</button>
       </div>
@@ -51,7 +53,7 @@
               v-if="comment.member_id === $store.state.memberStore.userInfo.memberId"
               class="button-wrapper"
             >
-              <button>X</button>
+              <button @click="deleteComment(j)">X</button>
             </td>
           </tr>
         </tbody>
@@ -90,6 +92,12 @@ export default {
   },
 
   methods: {
+    deleteComment(j) {
+      const commentId = this.comments[j].comment_id;
+      http.delete("/review/comments/" + commentId).then(() => {
+        this.getComments();
+      });
+    },
     postComments() {
       const memberId = this.$store.state.memberStore.userInfo.memberId;
       const reviewId = this.$route.params.rid;

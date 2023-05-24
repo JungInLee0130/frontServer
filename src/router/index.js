@@ -37,7 +37,7 @@ const onlyAuthUser = async (to, from, next) => {
   let token = sessionStorage.getItem("access-token");
   console.log("로그인 처리 전", checkUserInfo);
 
-  if (checkUserInfo != null && token){
+  if (checkUserInfo != null && token) {
     //console.log("토큰 유효성 체크");
     await store.dispatch("memberStore/getUserInfo", token);
   }
@@ -58,6 +58,18 @@ const routes = [
     component: HomeView,
   },
   {
+    path: "*",
+    redirect: (to) => {
+      return {
+        name: "error",
+        params: {
+          message: "Page Not Found",
+          status: 404,
+        },
+      };
+    },
+  },
+  {
     path: "/plan",
     name: "plan",
     component: PlanView,
@@ -66,6 +78,7 @@ const routes = [
     path: "/error",
     name: "error",
     component: ErrorView,
+    props: true,
   },
   {
     path: "/review",

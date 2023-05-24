@@ -12,8 +12,8 @@
       </div>
 
       <div class="plan-review">
-        <div class="plan-item" v-for="(day, index) in travelPlans.list" :key="index">
-          <h3 class="plan-date">{{ day[0].plan_date }}</h3>
+        <div class="plan-item" v-for="(day, index) in dayList" :key="index">
+          <h3 class="plan-date">{{ day.reviewDate }}</h3>
           <textarea
             class="plan-review-text"
             v-model="board[index]"
@@ -37,10 +37,11 @@ import axios from "axios";
 export default {
   data() {
     return {
-      travelPlans: [],
       board: [],
       rtitle: "",
       focusedIndex: null, // 포커스된 요소의 인덱스
+      startDate: null,
+      dayList: [],
 
       imageFile: null,
       imgUrl: "",
@@ -73,22 +74,19 @@ export default {
       const sendJson = {
         review_id: id,
         title: title,
-        start_date: this.travelPlans.start_date,
+        start_date: this.startDate,
         list: this.board,
       };
       console.log(sendJson);
       http.put("/review", sendJson).then(() => this.$router.push("/review/detail/" + id));
     },
-    getList() {
-      const id = this.$route.params.mid;
-      http.get("/review/myplan/" + id).then(({ data }) => {
-        this.travelPlans = data.response;
-      });
-    },
+
     getDetail() {
       const id = this.$route.params.mid;
       http.get("/review/all/" + id).then(({ data }) => {
         this.rtitle = data.response.title;
+        this.startDate = data.response.dailyList[0].reviewDate;
+        this.dayList = data.response.dailyList;
         for (let i = 0; i < data.response.dailyList.length; i++) {
           this.board.push(data.response.dailyList[i].contents);
         }
@@ -121,7 +119,6 @@ export default {
     },
   },
   created() {
-    this.getList();
     this.getDetail();
   },
 };
