@@ -64,8 +64,9 @@ export default {
             await this.userConfirm(this.member);
 
             let token = sessionStorage.getItem("access-token");
-            //console.log("1 : token : " + token);
+
             if (this.isLogin) {
+                console.log(token);
                 await this.getUserInfo(token);
                 this.$router.push({ name: "home" });
             }

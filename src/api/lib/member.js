@@ -18,7 +18,6 @@ async function getMemberId(token,success,fail){
     accessToken: token,
   }
   console.log(accessTokenDto.accessToken);
-  //api.defaults.header["access-token"] = sessionStorage.getItem("access-token");
   await api.post(`/token`, accessTokenDto).then(success).catch(fail);
 }
 
