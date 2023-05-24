@@ -160,6 +160,7 @@ export default {
     };
   },
   mounted() {
+    http.get("/auth").catch(() => {});
     if (window.kakao && window.kakao.maps) {
       this.initMap();
     } else {

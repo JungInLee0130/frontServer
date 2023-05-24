@@ -71,6 +71,16 @@ instance.interceptors.response.use(
         },
       });
     }
+    if (error.response.data.error.status === 401) {
+      router.push("/");
+      alert("로그인이 필요한 서비스입니다.");
+    }
+
+    if (error.response.data.error.status === 406) {
+      console.log("다시 보내자");
+      console.log(error.config);
+      instance.request(error.config);
+    }
 
     return Promise.reject(error);
   }
