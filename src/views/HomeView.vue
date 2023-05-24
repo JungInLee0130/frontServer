@@ -25,7 +25,6 @@
             data-aos-delay="300"
           />
         </div>
-        <button @click="test">test</button>
       </div>
     </div>
   </section>
@@ -34,13 +33,7 @@
 
 <script>
 import http from "@/api/lib/axios.js";
-export default {
-  methods: {
-    test() {
-      http.get("/reviewSFSDFS");
-    },
-  },
-};
+export default {};
 </script>
 <style scope>
 #hero {

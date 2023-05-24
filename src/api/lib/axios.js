@@ -80,9 +80,10 @@ instance.interceptors.response.use(
 
     // expired되면
     if (error.response.data.error.status === 406) {
-      console.log("다시 보내자");
-      console.log(error.config);
-      instance.request(error.config);
+      const newToken = error.response.headers["access-token"];
+      sessionStorage.setItem("access-token", newToken);
+      console.clear();
+      return instance.request(error.config);
     }
 
     return Promise.reject(error);
