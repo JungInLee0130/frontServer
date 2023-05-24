@@ -3,10 +3,10 @@
     <div class="notfound-bg"></div>
     <div class="notfound">
       <div class="notfound-404">
-        <h1>404</h1>
+        <h1>{{ $route.params.status }}</h1>
       </div>
-      <h2>we are sorry, but the page you requested was not found</h2>
-      <a href="#" class="home-btn">Go Home</a>
+      <h2>{{ $route.params.message }}</h2>
+      <a href="" @click="goHome" class="home-btn">Go Home</a>
       <a href="#" class="contact-btn">Contact us</a>
     </div>
   </div>
@@ -14,7 +14,23 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    goHome() {
+      this.$router.push("/");
+    },
+  },
+  props: {
+    message: {
+      type: String,
+      default: "Page Not Found",
+    },
+    status: {
+      type: Number,
+      default: 404,
+    },
+  },
+};
 </script>
 
 <style scoped>

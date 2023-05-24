@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from "../../router";
 
 // axios 객체 생성
 const instance = axios.create({
@@ -27,7 +28,6 @@ instance.interceptors.request.use(
   },
   (error) => {
     // 요청 에러 직전 호출
-    console.log(error);
     return Promise.reject(error);
   }
 );
@@ -51,6 +51,27 @@ instance.interceptors.response.use(
         응답 에러 직전 호출
         .catch() 으로 이어짐
     */
+
+    if (error.response.data.status === 500) {
+      router.push({
+        name: "error",
+        params: {
+          message: "Server Error",
+          status: 500,
+        },
+      });
+      return new Promise(() => {});
+    }
+    if (error.response.data.error.status === 500) {
+      router.push({
+        name: "error",
+        params: {
+          message: error.response.data.error.message,
+          status: error.response.data.error.status,
+        },
+      });
+    }
+
     return Promise.reject(error);
   }
 );
