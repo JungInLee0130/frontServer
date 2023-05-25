@@ -106,7 +106,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
           this.imgUrl = `<img src="${response.data}" style="width: 600px; height:auto;" alt="image">`;
           this.concatString();
 
@@ -114,10 +113,7 @@ export default {
           this.imageFile = null;
           this.imgUrl = null;
         })
-        .catch(({ data }) => {
-          // 이미지 업로드 실패 시 수행할 작업
-          console.error(data);
-        });
+        .catch(({ data }) => {});
     },
   },
   created() {
