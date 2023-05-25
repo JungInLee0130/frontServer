@@ -20,11 +20,9 @@ import UserView from "../views/User/UserView.vue";
 //에러
 import ErrorView from "../views/Error/ErrorView.vue";
 // 멤버컴포넌트
-import NavBar from "../components/NavBar.vue";
 import MemberList from "../components/Member/MemberList";
 import MemberDetail from "../components/Member/MemberDetail";
 import AdminUpdate from "../components/Member/AdminUpdate";
-import MyPage from "../components/User/MyPage";
 
 // store
 import store from "@/store";
@@ -37,7 +35,6 @@ const onlyAuthUser = async (to, from, next) => {
   let token = sessionStorage.getItem("access-token");
 
   if (checkUserInfo != null && token) {
-    //console.log("토큰 유효성 체크");
     await store.dispatch("memberStore/getUserInfo", token);
   }
   if (!checkToken || checkUserInfo === null) {

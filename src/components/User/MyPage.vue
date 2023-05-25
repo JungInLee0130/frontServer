@@ -43,8 +43,7 @@
 </template>
 
 <script>
-import { apiInstance } from '@/api/lib/index';
-const http = apiInstance();
+import http from '@/api/lib/axios.js';
 
 export default {
     name: 'MyPage',
@@ -63,6 +62,7 @@ export default {
             http
                 .put(`/memberupdate`, this.member)
                 .then(({ data }) => {
+                    console.log(data);
                     if (data != null) {
                         alert("회원정보를 수정하였습니다.");
                     }
