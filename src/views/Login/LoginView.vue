@@ -62,10 +62,10 @@ export default {
         ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
         async confirm() {
             await this.userConfirm(this.member);
-
             let token = sessionStorage.getItem("access-token");
-            //console.log("1 : token : " + token);
             if (this.isLogin) {
+                //console.log(token);
+                // userInfo state에 저장
                 await this.getUserInfo(token);
                 this.$router.push({ name: "home" });
             }

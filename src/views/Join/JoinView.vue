@@ -15,7 +15,7 @@
 
             <div class="join-wrap">
                 <label class="label-nickname">nickname : </label>
-                <input class="input-nickname" type="text" name="nickname" width="50" v-model="nickname" />   
+                <input class="input-nickname" type="text" name="nickname" width="50" v-model="nickname" />
             </div>
 
 
@@ -116,7 +116,7 @@ export default {
                 http
                     .post(`/join`, data)
                     .then(({ data }) => {
-                        console.log(data); // 1: 성공시
+                        //console.log(data); // 1: 성공시
                         if (data != null) {
                             alert("회원가입이 완료되었습니다.");
                             this.$router.push(`/`);
@@ -213,17 +213,16 @@ export default {
             // 2. idCondition == 1 && id 중복체크
             http.get(`/check/${str}`)
                 .then(({ data }) => {
-                    console.log(data.memberId);
-
-                    if (str == data.memberId) {
-                        this.duplicatedId = '-1'
-                        alert("중복된 아이디 입니다.");
-                    }
-                    else {
-                        // 1: 사용가능
+                    console.log(data);
+                    if (data.success) {
                         this.duplicatedId = '1'
                         alert("사용할 수 있는 아이디입니다.");
                     }
+                    else {
+                        this.duplicatedId = '-1'
+                        alert("중복된 아이디 입니다.");
+                    }
+
                 }).catch(function (error) {
                     console.log(error);
                 });

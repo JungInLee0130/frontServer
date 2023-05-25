@@ -38,15 +38,15 @@ const memberStore={
             await login(
                 member,
                 ({data}) => {
-                    if (data.message === "success"){
-                        //console.log("success");   
-                        let accessToken = data["access-token"];
-                        let refreshToken = data["refresh-token"];
-                        //console.log("login success token created!!!! >> ", accessToken, refreshToken);
-                        // action -> commit -> mutation -> state
+                    if (data.success){
+                        //console.log(data);
+                        let accessToken = data.response["access-token"];
+                        let refreshToken = data.response["refresh-token"];
+                        
                         commit("SET_IS_LOGIN", true);
                         commit("SET_IS_LOGIN_ERROR", false);
                         commit("SET_IS_VALID_TOKEN", true);
+
                         sessionStorage.setItem("access-token", accessToken);
                         sessionStorage.setItem("refresh-token", refreshToken);
 
@@ -61,21 +61,18 @@ const memberStore={
                 }
             )
         },
-        // dispatch -> action
+        
         // 유저정보 얻어옴
         async getUserInfo({commit, dispatch}, token){
-            // 토큰 디코딩
             let decodeToken = jwtDecode(token);
             //console.log("getUserInfo 디코드토큰:", decodeToken);
             // 토큰 형식 : memberId만 담고있음
             await findById(
                 decodeToken.memberId,
                 ({data}) => {
-                    // 성공하면 : 반환은 dto, success, userinfo
                     //console.log(data);
-                    if (data.message === "success"){
-                        commit("SET_USER_INFO", data.userInfo);
-                        //console.log("getUserInfo data: ", data.userInfo);
+                    if (data.success){
+                        commit("SET_USER_INFO", data.response);
                     } else{
                         console.log("유저 정보 없음!!!!");
                     }

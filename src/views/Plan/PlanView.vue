@@ -160,6 +160,7 @@ export default {
     };
   },
   mounted() {
+    http.get("/auth").catch(() => {});
     if (window.kakao && window.kakao.maps) {
       this.initMap();
     } else {
@@ -252,7 +253,6 @@ export default {
 
       const nowArr = this.text1;
       const arr2 = nowArr.map((innerArr) => innerArr.map((obj) => obj.content_id));
-      console.log(arr2);
 
       let finalJSON = {
         member_id: member_id,

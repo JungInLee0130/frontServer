@@ -72,6 +72,20 @@ instance.interceptors.response.use(
       });
     }
 
+    // invali
+    if (error.response.data.error.status === 401) {
+      router.push("/");
+      alert("로그인이 필요한 서비스입니다.");
+    }
+
+    // expired되면
+    if (error.response.data.error.status === 406) {
+      const newToken = error.response.headers["access-token"];
+      sessionStorage.setItem("access-token", newToken);
+      console.clear();
+      return instance.request(error.config);
+    }
+
     return Promise.reject(error);
   }
 );
