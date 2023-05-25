@@ -33,13 +33,11 @@ const onlyAuthUser = async (to, from, next) => {
   const checkUserInfo = store.getters["memberStore/checkUserInfo"];
   const checkToken = store.getters["memberStore/checkToken"]; // isvalidtoken
   let token = sessionStorage.getItem("access-token");
-  //console.log("로그인 처리 전", checkUserInfo);
 
   if (checkUserInfo != null && token) {
     await store.dispatch("memberStore/getUserInfo", token);
   }
   if (!checkToken || checkUserInfo === null) {
-    alert("로그인이 필요한 페이지입니다.");
     store.state.memberStore.isLogin = false;
     router.push({ name: "login" });
   } else {

@@ -51,8 +51,8 @@ instance.interceptors.response.use(
         응답 에러 직전 호출
         .catch() 으로 이어짐
     */
-
-    if (error.response.data.status === 500) {
+    console.log(error);
+    if (error.response.status === 500) {
       router.push({
         name: "error",
         params: {
