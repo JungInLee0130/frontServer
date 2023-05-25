@@ -1,11 +1,11 @@
 <template>
   <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="container d-flex align-items-center justify-content-between">
-      <router-link to="/">
+      <div class="logo d-flex align-items-center me-auto me-lg-0" @click="goHome">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.png" alt=""> -->
-        <h1>EnjoyTrips<span>.</span></h1>
-      </router-link>
+        <h1>Yummy Trip<span>.</span></h1>
+      </div>
 
       <nav id="navbar" class="navbar">
         <ul>
@@ -13,30 +13,6 @@
           <li><router-link to="/about">About</router-link></li>
           <li><router-link to="/plan">Plan</router-link></li>
           <li><router-link to="/review">Review</router-link></li>
-          <li><router-link to="/error">Error</router-link></li>
-          <li class="dropdown">
-            <a href="#"
-              ><span>Drop Down</span> <i class="bi bi-chevron-down dropdown-indicator"></i
-            ></a>
-            <ul>
-              <li><a href="#">Drop Down 1</a></li>
-              <li class="dropdown">
-                <a href="#"
-                  ><span>Deep Drop Down</span> <i class="bi bi-chevron-down dropdown-indicator"></i
-                ></a>
-                <ul>
-                  <li><a href="#">Deep Drop Down 1</a></li>
-                  <li><a href="#">Deep Drop Down 2</a></li>
-                  <li><a href="#">Deep Drop Down 3</a></li>
-                  <li><a href="#">Deep Drop Down 4</a></li>
-                  <li><a href="#">Deep Drop Down 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Drop Down 2</a></li>
-              <li><a href="#">Drop Down 3</a></li>
-              <li><a href="#">Drop Down 4</a></li>
-            </ul>
-          </li>
         </ul>
       </nav>
       <!-- .navbar -->
@@ -91,6 +67,9 @@ export default {
       sessionStorage.removeItem("vuex");
       sessionStorage.removeItem("access-token");
       sessionStorage.removeItem("refresh-token");
+      if (this.$route.path != "/") this.$router.push({ name: "home" });
+    },
+    goHome() {
       if (this.$route.path != "/") this.$router.push({ name: "home" });
     },
   },

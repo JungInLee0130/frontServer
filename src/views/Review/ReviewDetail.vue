@@ -146,7 +146,6 @@ export default {
       const id = this.$route.params.rid;
       http.get("/review/all/" + id).then(({ data }) => {
         this.review = data.response;
-        console.log(data.response);
         this.startDay = data.response.dailyList[0].reviewDate;
         this.myTitle = data.response.title;
         this.myLikeCount = data.response.likeCount;

@@ -5,19 +5,24 @@
         <p>Plan Your Own <span>Itinerary</span></p>
       </div>
 
-      <div class="Calender">
-        <label for="start_date">Start date:</label>
-        <input type="date" v-model="startDate" @change="updateOptions" />
-        <label for="end_date">End date:</label>
-        <input type="date" v-model="endDate" @change="updateOptions" />
+      <div class="calendar">
+        <div class="date-picker">
+          <label for="start_date">Start Date:</label>
+          <input type="date" id="start_date" v-model="startDate" @change="updateOptions" />
+        </div>
+        <div class="date-picker">
+          <label for="end_date">End Date:</label>
+          <input type="date" id="end_date" v-model="endDate" @change="updateOptions" />
+        </div>
       </div>
       <div class="map_wrap" style="display: flex">
         <div id="map" style="width: 80%; height: 100%; position: relative; overflow: hidden"></div>
         <div id="rightList" style="width: 20%; overflow: auto">
-          여행 계획 세우기
+          <h2 style="font-size: 20px; margin-bottom: 10px">일자별 일정</h2>
           <select
             v-if="options.length > 0"
             v-model="selectedOption"
+            class="select-toggle"
             @change="updateSelectedOptionData"
           >
             <option v-for="(option, i) in options" :value="option" :key="i">{{ option }}</option>
@@ -707,5 +712,43 @@ export default {
   padding: 0rem 0 0 0;
   margin: 0 0 1rem 0;
   font: normal 2rem var(--font-head);
+}
+
+/* 달력 */
+.calendar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.date-picker {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+input[type="date"] {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+input[type="date"]:focus {
+  outline: none;
+  border-color: #888;
+  box-shadow: 0 0 3px #aaa;
+}
+.select-toggle {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
 }
 </style>
