@@ -122,7 +122,6 @@ export default {
   },
   created() {
     let memberId = this.$route.params.memberId;
-    console.log(memberId);
     this.memberDetail(memberId);
   },
   methods: {
@@ -130,7 +129,6 @@ export default {
       http
         .get(`/memberdetail/${id}`)
         .then(({ data }) => {
-          console.log(data);
           this.member = data;
         })
         .catch((error) => {

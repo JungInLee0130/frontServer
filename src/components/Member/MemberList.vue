@@ -58,16 +58,12 @@ export default {
             this.memberList();
         },
         memberList() {
-            console.log("memberlist 실행");
             http
                 .get("/memberlist")
                 .then(({ data }) => {
-                    console.log("memberlist 실행됨");
                     this.members = data;
-                    console.log(data);
                 })
                 .catch((error) => {
-                    console.log("memberlist 실행 에러");
                     console.log(error);
                     if (this.$store.state.memberStore.isValidToken == false){
                         alert("토큰 만료. 엑세스 토큰 재발급.");
