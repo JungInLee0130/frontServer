@@ -29,18 +29,6 @@
       </div>
     </div>
   </section>
-  <!-- End Hero Section -->
-  <div class="main-plan">
-    <h2 style="text-align:center">Plan</h2>
-    <img src="../assets/img/main/plan/plan_map.png" alt="kakaomap">
-    <h4 style="margin-top:20px">you can select places you want to go.</h4>
-    <div class="main-plan-timeline">
-      <img src="../assets/img/main/plan/plan_day1.png" alt="day1">
-      <img src="../assets/img/main/plan/plan_day2.png" alt="day2">
-      <img src="../assets/img/main/plan/plan_day3.png" alt="day3">
-      <h4 style="margin-top:20px">you can see TimeLines you planned.</h4>
-    </div>
-  </div>
 </div>
 </template>
 
@@ -56,12 +44,4 @@ export default {};
   font-size: 25px;
 }
 
-.main-plan{
-  height: 1300px;
-  margin-top: 70px;
-  text-align: center;
-}
-.main-plan-timeline{
-  margin-top:50px;
-}
 </style>
