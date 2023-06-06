@@ -17,10 +17,11 @@ instance.interceptors.request.use(
     // const token = VueCookies.get("accesstoken").token;
     // config.headers.Authorization = `${token}`;
     // return config;
+    // 엑세스 토큰이 null이 아니면
+    // 리프레시는 발급용, 엑세스는 인증용
     if (sessionStorage.getItem("access-token") !== null) {
       config.headers["access-token"] = sessionStorage.getItem("access-token");
       config.headers["refresh-token"] = sessionStorage.getItem("refresh-token");
-      // console.log(config);
       return config;
     } else {
       return config;
@@ -51,8 +52,17 @@ instance.interceptors.response.use(
         응답 에러 직전 호출
         .catch() 으로 이어짐
     */
-    console.log(error);
-    if (error.response.status === 500) {
+    console.log(error.response.data.code);
+    console.log(error.response.data.status);
+
+    // invali
+    if (error.response.data.code === "C004"
+      && error.response.data.status === 401) {
+      router.push("/");
+      alert("로그인이 필요한 서비스입니다.");
+    }
+    
+    else if (error.response.status === 500) {
       router.push({
         name: "error",
         params: {
@@ -62,7 +72,7 @@ instance.interceptors.response.use(
       });
       return new Promise(() => {});
     }
-    if (error.response.data.error.status === 500) {
+    else if (error.response.data.error.status === 500) {
       router.push({
         name: "error",
         params: {
@@ -72,14 +82,8 @@ instance.interceptors.response.use(
       });
     }
 
-    // invali
-    if (error.response.data.error.status === 401) {
-      router.push("/");
-      alert("로그인이 필요한 서비스입니다.");
-    }
-
     // expired되면
-    if (error.response.data.error.status === 406) {
+    else if (error.response.data.error.status === 406) {
       const newToken = error.response.headers["access-token"];
       sessionStorage.setItem("access-token", newToken);
       console.clear();

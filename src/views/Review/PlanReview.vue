@@ -6,13 +6,8 @@
       </div>
 
       <div class="row gy-4">
-        <div
-          class="col-lg-4 col-md-6 d-flex align-items-stretch"
-          data-aos="fade-up"
-          data-aos-delay="100"
-          v-for="(review, i) in reviews"
-          :key="i"
-        >
+        <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100"
+          v-for="(review, i) in reviews" :key="i">
           <router-link :to="`/review/detail/${review.review_id}`" class="chef-member">
             <div class="member-img">
               <img :src="getImageSource(i)" class="img-fluid" alt="" />

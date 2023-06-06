@@ -3,7 +3,6 @@ import { apiInstance } from "./index.js";
 const api = apiInstance();
 
 async function login(member, success, fail) {
-  // JSON.stringify : member를 스
   await api.post(`/login`, JSON.stringify(member)).then(success).catch(fail);
 }
   

@@ -39,7 +39,9 @@ const memberStore={
                 member,
                 ({data}) => {
                     if (data.success){
-                        //console.log(data);
+                        
+                        console.log("데이터 형식 찍기: ");
+                        console.log(data);
                         let accessToken = data.response["access-token"];
                         let refreshToken = data.response["refresh-token"];
                         
@@ -51,6 +53,7 @@ const memberStore={
                         sessionStorage.setItem("refresh-token", refreshToken);
 
                     } else{
+                        alert("엑세스 토큰 만료.");
                         commit("SET_IS_LOGIN", false);
                         commit("SET_IS_LOGIN_ERROR", true);
                         commit("SET_IS_VALID_TOKEN", false);
